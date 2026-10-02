@@ -159,3 +159,5 @@ Another application of flash technology is found in **SD (Secure Digital)memory 
 - These provide up to two GBs of storage and are packaged in a plastic-rigged wafer about the size of a postage stamp. (SD cards are also available in smaller mini and micro sizes.)
 
 **SDHC (High Capacity) memory cards** can provide up to 32 GBs and the next generation **SDXC (Extended Capacity) memory cards** can exceed a TB
+
+## Representing Information as Bit Patterns
