@@ -3,3 +3,6 @@ format:
     toc: true
     toc-depth: 3
     number-sections: true
+
+metadata:
+  section-numbering: 1.1.1

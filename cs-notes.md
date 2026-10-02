@@ -15,7 +15,7 @@ operation’s input values is called a **gate**, or sometimes a **logic gate**.
 
 ![Logical Gates](images/logical-gates.png)
 
-#### Flip-Flop Circuit
+**Flip-Flop Circuit**
 
 A flip-flop is a fundamental
 unit of computer memory. It is a circuit that produces an output value
@@ -137,7 +137,7 @@ Another class of mass storage systems applies optical technology.
 Mass storage systems based on magnetic or optic technology uses physical motion such as spinning disks, moving read/write heads, and aiming laser beams to store and retrieve data.
 Data storage and retrieval is slow compared to the speed of electronic circuitry
 
-#### Flash Memory Technology
+**Flash Memory Technology**
 
 In a flash memory system, bits are stored by sending electronic signals directly to the storage medium where they cause electrons to be trapped in tiny chambers of silicon dioxide, thus altering the characteristics of small electronic circuits.
 
@@ -161,3 +161,136 @@ Another application of flash technology is found in **SD (Secure Digital)memory 
 **SDHC (High Capacity) memory cards** can provide up to 32 GBs and the next generation **SDXC (Extended Capacity) memory cards** can exceed a TB
 
 ## Representing Information as Bit Patterns
+
+### Representing Text
+
+Information in the form of text is normally represented by means of a code in which each of the different symbols in the text (such as the letters of the alphabet and punctuation marks) is assigned a unique bit pattern. The text is then represented as a long string of bits in which the successive patterns represent the successive symbols in the original text.
+
+**ASCII** (American Standard Code for Information Interchange)
+- uses bit patterns of length seven
+- extended to an eight-bit-per-symbol format by adding a 0 at the most significant end of each of the seven-bit patterns
+
+![ASCII "Hello"](images/ascii-hello.png)
+
+**Unicode**
+- uses a unique pattern of up to 21 bits to represent each symbol
+
+**Unicode Transformation Format 8-bit (UTF-8)**
+
+When the **Unicode character set** is combined with the **Unicode Transformation Format 8-bit (UTF-8)** encoding standard:
+
+- original ASCII characters can still be represented with 8 bits
+- while the thousands of additional characters from other languages can be represented by 16 bits.
+- UTF-8 uses 24- or 32-bit patterns to represent more obscure Unicode symbols, leaving ample room for future expansion
+
+A file consisting of a long sequence of symbols encoded using ASCII or Unicode is often called a **text file**
+
+### Representing Numeric Values
+
+Storing information in terms of encoded characters is inefficient when the information being recorded is purely numeric.
+
+By using binary notation, we can store any integer in the range from 0 to 65535 in 16 bits for example.
+
+**Common forms of binary notation**
+
+- two's complement notation is common for storing whole numbers (both positive and negative values)
+- floating-point notation for representing numbers with fractional parts
+
+### Representing Images
+
+One means of representing an image is to interpret the image as a collection of dots, each of which is called a **pixel**, short for "picture element."
+
+The appearance of each pixel is then encoded and the entire image is represented as a collection of these encoded pixels. Such a collection is called a **bit map**.
+
+### Representing Sound
+
+The most generic method of encoding audio information for computer storage and manipulation is to sample the amplitude of the sound wave at regular intervals and record the series of values obtained.
+
+## The Binary System
+
+### Binary Notation
+
+![The base ten and binary systems](images/binary-systems-1.png)
+
+![Decoding binary representation 100101](images/binary-values.png)
+
+**An algorithm for finding the binary representation of a positive integer**
+
+![The algorithm](images/find-binary-value-1.png)
+
+![Applying the algorithm](images/find-binary-value-2.png)
+
+### Binary Addition
+
+![Binary Addition](images/binary-addition.png)
+
+### Fractions in Binary
+
+To extend binary notation to accommodate fractional values, we use a radix point in the same role as the decimal point in decimal notation.
+
+- digits to the left of the point represent the integer part (whole part)
+- digits to the right represent the fractional part of the value
+    - their positions are assigned fractional quantities
+
+![Fractions in binary](images/fractions-in-binary.png)
+
+## Storing Integers
+
+### Two's Complement Notation
+
+- Uses a fixed number of bits to represent each of the values in the system
+- **sign bit** - the leftmost bit of a bit pattern indicates the sign of the value represented
+
+![Two's complement notation systems](images/twos-complement.png)
+
+There is a convenient relationship between positive and negative values of the same magnitude
+
+- They are identical when read from right to left, up to and including the first 1
+- From there on, the patterns are complements of one another
+    - The complement of a pattern is the pattern obtained by reversing the values: 0 -> 1, 1 -> 0
+
+![Encoding the value - 6 in two’s complement notation using 4 bits](images/twos-complement-rel.png)
+
+### Addition in Two's Complement Notation
+
+We apply the same algorithm that we used for binary addition, except that all bit patterns, including the answer, are the same length, any extra bit generated on the left of the answer by a final carry must be truncated
+
+![Addition problems converted to two’s complement notation](images/twos-complement-add.png)
+
+A major benefit of two’s complement notation:
+
+- 7 - 5 can be written as 7 + (-5)
+- a machine using two’s complement notation needs to know only how to add
+- a circuit for addition combined with a circuit for negating a
+value is sufficient for solving both addition and subtraction problems
+
+![Subtraction with two's complement](images/twos-complement-subtraction.png)
+
+### The Problem of Overflow
+
+When using two’s complement with patterns of 4 bits, the largest positive integer that can be represented is 7, and the most negative integer is -8.
+In particular, the value 9 can not be represented, which means that we cannot hope to obtain the correct answer to the problem 5 + 4.
+In fact, the result would appear as - 7 . This phenomenon is called **overflow**.
+
+Today, it is common to use patterns of 32 bits for storing values in two’s complement notation, allowing for positive values as large as 2,147,483,647 to accumulate before overflow occurs.
+
+## Excess Notation
+
+Another method of representing integer values is **excess notation**
+
+- each of the values in an excess notation system is represented by a bit pattern of the same length
+
+**To establish an excess system:**
+
+1. We first select the pattern length to be used
+2. Then write down all the different bit patterns of that length in the order they would appear if we were counting in binary
+3. We observe that the first pattern with a 1 as its most significant bit appears approximately halfway through the list
+4. We pick this pattern to represent zero
+5. The patterns following this are used to represent positive integers.
+6. The patterns preceding it are used for negative integers
+
+**Note** that one difference between an excess system and a two’s complement system is that the sign bits are reversed.
+
+![An excess eight conversion table](images/excess-notation.png)
+
+## Storing Fractions
