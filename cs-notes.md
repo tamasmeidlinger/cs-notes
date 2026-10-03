@@ -294,3 +294,232 @@ Another method of representing integer values is **excess notation**
 ![An excess eight conversion table](images/excess-notation.png)
 
 ## Storing Fractions
+
+### Floating-Point Notation
+
+Stores not only the pattern of 0s and 1s representing its binary representation but also the position of the radix point
+
+**Using 8 bits**
+
+1. We first designate the high-order bit of the byte as the sign bit - 0 means nonnegative
+2. We divide the remaining 7 bits of the byte into two groups
+    - the exponent field
+    - the mantissa field
+3. Designate the 3 bits following the sign bit as the exponent field and the remaining 4 bits as the mantissa field
+
+![Floating-point notation components](images/floating-point.png)
+
+**To decode the byte**
+
+Suppose a byte consists of the bit pattern 01101011
+
+1. We first extract the mantissa and place a radix point on its left side, obtaining: **.1011**
+2. Extract the contents of the exponent field (110) and interpret it as an integer stored using the 3-bit excess method
+    - Thus, the pattern in the exponent field in our example represents a positive 2
+    - This tells us to move the radix in our solution to the right by 2 bits
+    - A negative exponent would mean to move the radix to the left
+3. **We obtain 10.11** which is the binary representation for 2.75
+
+**To store a value using floating-point notation, we reverse the preceding process**
+
+To encode 1.125 -> (1 + 1/8):
+
+1. We express it in binary notation and obtain 1.001
+2. We copy the bit pattern into the mantissa field from left to right, **starting with the leftmost 1** in the binary representation
+    - At this point, the byte looks like this: ____1001
+3. Fill in the exponent field
+    1. we imagine the contents of the mantissa field with a radix point at its left
+    2. determine the number of bits and the direction the radix must be moved to obtain the original binary number
+    3. write that number in excess notation (3bits) -> 101
+4. We fill the sign bit with 0 because the value being stored is nonnegative -> 0.101.1001
+
+**IMPORTANT**
+
+The rule is to copy the bit pattern appearing in the binary representation from left to right, starting with the leftmost 1.
+To clarify, consider the process of storing the value 3/8, which is .011 in binary notation.
+In this case, the mantissa will be:
+
+____1100
+
+NOT ____0110
+
+Representations that conform to this rule are said to be in normalized form.
+
+Many of today’s computers support a 32 bit form of this notation called **Single Precision Floating Point**. This format uses 1 bit for the sign, 8 bits for the exponent (in an excess notation), and 23 bits for the mantissa.
+Another form, called **Double Precision Floating Point**, uses 64 bits and provides a precision of 15 decimal digits.
+
+### Truncation Errors
+
+**Truncation error**, or **round-off error** — part of the value being stored is lost because the mantissa field is not large enough.
+
+![Truncation Error](images/truncation-error.png)
+
+## Data Compression
+
+**data compression** - to reduce the size of the data involved while retaining the underlying information
+
+### Generic Data Compression Techniques
+
+Data compression schemes fall into two categories:
+1. **lossless** schemes - do not lose information in the compression process
+2. **lossy** schemes - may lead to the loss of information but often provide more compression than lossless ones
+    - popular in settings in which minor errors can be tolerated, as in the case of images and audio
+
+**1. run-length encoding**
+
+- popular where the data being compressed consist of long sequences of the same value
+- lossless
+- replaces sequences of identical data elements with a code, indicating the element that is repeated and the number of times it occurs in the sequence
+
+**2. frequency-dependent encoding**
+
+- lossless
+- a system in which the length of the bit pattern used to represent a data item is inversely related to the frequency of the item’s use
+    - **The more often something appears, the fewer bits we use to represent it.**
+
+**3. relative encoding, aka differential encoding**
+
+In some cases, the stream of data to be compressed consists of units, each of which differs only slightly from the preceding one.
+
+For example consecutive frames of a motion picture.
+
+- record the differences between consecutive data units rather than entire units
+- each unit is encoded in terms of its relationship to the previous unit
+- can be implemented in either lossless or lossy form
+
+**dictionary encoding**
+
+The term dictionary refers to a collection of building blocks from which the message being compressed is constructed.
+
+The message itself is encoded as a sequence of references to the dictionary.
+
+### Compressing Images
+
+**1. GIF (Graphic Interchange Format)**
+
+- is a dictionary encoding system
+- approaches the compression problem by reducing the number of colors that can be assigned to a pixel to only 256
+- The red-green-blue combination for each of these colors is encoded using three bytes
+- these 256 encodings are stored in a table (a dictionary) called the **palette**
+- Each pixel in an image can then be represented by a single byte whose value indicates which of the 256 palette entries represents the pixel’s color
+- is a lossy compression system when applied to arbitrary images because the colors in the palette may not be identical to the colors in the original image
+
+**2. JPEG**
+
+Developed by the **Joint Photographic Experts Group**
+
+- encompasses several methods of image compression, each with its own goals
+- provides a lossless mode however does not produce high levels of compression when compared to other JPEG options -> rarely used
+- **JPEG baseline standard** has become the standard of choice in many applications
+
+JPEG baseline standard:
+
+- requires a sequence of steps, some of which are designed to take advantage of a human eye’s limitations
+
+### Compressing Audio and Video
+
+The most commonly used standards for encoding and compressing audio and video were developed by the **Motion Picture Experts Group (MPEG)** -> these standards themselves are called MPEG
+
+MPEG encompasses a variety of standards for different applications
+
+**1. Video Compression**
+
+- in general, video compression techniques are based on video being constructed as a sequence of pictures in much the same way that motion pictures are recorded on film
+- To compress such sequences, only some of the pictures, called I-frames, are encoded in their entirety
+- The pictures between the I-frames are encoded using relative encoding techniques
+
+That is, rather than encode the entire picture, only its distinctions from the prior image are recorded. The I-frames themselves are usually compressed with techniques similar to JPEG
+
+**2. Audio Compression**
+
+The best known system for compressing audio is **MP3**
+
+The acronym MP3 is short for **MPEG layer 3**
+
+Takes advantage of the properties of the human ear, removing those details that the human ear cannot perceive
+
+- **temporal masking** - for a short period after a loud sound, the human ear cannot detect softer sounds that would otherwise be audible
+- **frequency masking** - a sound at one frequency tends to mask softer sounds at nearby frequencies
+
+Using MPEG and MP3 compression techniques, video cameras are able to record as much as an hour’s worth of video within 128MB of storage, and portable music players can store as many as 400 popular songs in a single GB
+
+In contrast to the goals of compression in other settings, the goal of compressing audio and video is not necessarily to save storage space. Just as important is the goal of obtaining encodings that **allow information to be transmitted over today’s communication systems fast enough** to provide timely presentation.
+
+**Audio and video compression systems are often judged by the transmission speeds required for timely data communication**
+
+- speeds are normally measured in **bits per second (bps)**
+
+| Unit | Name | Bits per second |
+|---|---|---:|
+| Kbps | Kilobits per second | 1,000 bps |
+| Mbps | Megabits per second | 1,000,000 bps |
+| Gbps | Gigabits per second | 1,000,000,000 bps |
+
+## Communication Errors
+
+When information is transferred back and forth among different devices a chance exists that the bit pattern ultimately retrieved may not be identical to the original one.
+
+To resolve such problems, a variety of encoding techniques have been developed to allow the detection and even the correction of errors.
+
+Today, these techniques are largely built into the internal components of a computer system.
+
+### Parity Bits
+
+A simple method of detecting errors is based on the principle that if each bit pattern being manipulated has an odd number of 1s and a pattern with an even number of 1s is encountered, an error must have occurred.
+
+**an encoding system in which each pattern contains an odd number of 1s**
+
+- adding an additional bit, called a **parity bit**, to each pattern in an encoding system already available
+- we assign the value 1 or 0 to this new bit so that the entire resulting pattern has an odd number of 1s
+- -> a pattern with an even number of 1s indicates that an error has occurred and that the pattern being manipulated is incorrect
+
+![The ASCII codes for the letters A and F adjusted for odd parity](images/parity-bit.png)
+
+The parity system just described is called **odd parity**
+
+Another technique is called **even parity** -> each pattern is designed to contain an even number of 1s
+
+Today it is not unusual to find parity bits being used in a computer's main memory.
+Although we envision these machines as having memory cells of 8-bit capacity, in reality, each has a capacity of 9 bits.
+
+**Limitations**
+
+If a pattern originally has an odd number of 1s and suffers two errors, it will still have an odd number of 1s
+
+One means of minimizing this problem is sometimes applied to long bit patterns, such as the string of bits recorded in a sector on a magnetic disk. In this case, the pattern is accompanied by a collection of parity bits making up a **checkbyte**.
+
+- Each bit within the checkbyte is a parity bit associated with a particular collection of bits scattered throughout the pattern
+- one parity bit may be associated with every eighth bit in the pattern starting with the first bit
+- while another may be associated with every eighth bit starting with the second bit
+
+In this manner, a collection of errors concentrated in one area of the original pattern is more likely to be detected, since it will be in the scope of several parity bits.
+
+Variations of this checkbyte concept lead to error
+detection schemes known as **checksums** and **cyclic redundancy checks (CRC)**
+
+### Error-Correcting Codes
+
+**Hamming distance** - The Hamming distance between two bit patterns is the number of bits in which the patterns differ
+
+The Hamming distance between the patterns representing A and B in the code is four, and the Hamming distance between B and C is three.
+
+![An error-correcting code](images/hamming-distance.png)
+
+**In the code above**:
+
+- The important feature of the code above is that any two patterns are separated by a Hamming distance of at least three.
+- If a single bit is modified in a pattern, the error can be detected since the result will not be a legal pattern.
+    - We must change at least 3 bits in any pattern before it will look like another legal pattern
+    - We can also figure out what the original pattern was.
+    - The modified pattern will be a Hamming distance of only one from its original form but at least two from any of the other legal patterns.
+
+![Decoding the pattern 010100 using the code above](images/hamming-distance-decoding.png)
+
+Using this technique allows us to detect up to two errors per pattern and to correct one error.
+
+If we designed the code so that each pattern was a Hamming distance of at least five from each of the others, we would be able to detect up to four errors per pattern and correct up to two.
+
+Error-correcting techniques are used extensively to increase the reliability of computing equipment:
+
+- high-capacity magnetic disk drives
+- CDs
