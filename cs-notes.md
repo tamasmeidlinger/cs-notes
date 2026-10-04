@@ -762,3 +762,106 @@ Registers and main memory cells make no distinctions between the types of data t
 ![An encoded version of instructions](images/vole-encoded-instructions.png)
 
 ## Program Execution
+
+A computer follows a program stored in its memory by copying the instructions from memory into the CPU as needed.
+
+Once in the CPU, each instruction is decoded and obeyed.
+
+The order in which the instructions are fetched from memory corresponds to the order in which the instructions are stored in memory unless otherwise altered by a ```JUMP``` instruction.
+
+-----
+
+**Two of the special purpose registers within the CPU:**
+
+**the instruction register**: used to hold the instruction being executed
+
+**the program counter**: contains the address of the next instruction to be executed
+
+- thereby serving as the machine’s way of keeping track of where it is in the program
+
+-----
+
+The CPU performs its job by continually repeating an algorithm that guides it through a three-step process known as the **machine cycle**.
+
+The steps in the machine cycle are **fetch**, **decode**, and **execute**
+
+**fetch**
+
+- the CPU requests that main memory provide it with the instruction that is stored at the address indicated by the program counter.
+- Since each instruction in our machine is two bytes long, this fetch process involves retrieving the contents of two memory cells from main memory.
+- The CPU places the instruction received from memory in its instruction register and then increments the program counter by two so that the counter contains the address of the next instruction stored in memory. Thus, the program counter will be ready for the next fetch.
+
+**decode**
+
+- the instruction is now in the instruction register
+- CPU decodes the instruction
+    - which involves breaking the operand field into its proper components based on the instruction’s op-code
+
+**execute**
+
+- CPU then executes the instruction by activating the appropriate circuitry to perform the requested task
+
+- For example
+    - if the instruction is a load from memory
+        - the CPU sends the appropriate signals to main memory
+        - waits for main memory to send the data
+        - then places the data in the requested register
+    - if the instruction is for an arithmetic operation
+        -  the CPU activates the appropriate circuitry in the arithmetic/logic unit with the correct registers as inputs
+        - waits for the arithmetic/logic unit to compute the answer and place it in the appropriate register.
+
+Once the instruction in the instruction register has been executed, the CPU again begins the machine cycle with the fetch step. Observe that since the program counter was incremented at the end of the previous fetch, it again provides the CPU with the correct address.
+
+![The machine cycle](images/machine-cycle.png)
+
+![Information about comparing computer power](images/comparing-computer-power.png)
+
+### An Example of Program Execution
+
+Let us follow the machine cycle applied to the program presented above, which retrieves two values from main memory, computes their sum, and stores that total in a main memory cell.
+
+We first need to put the program somewhere in memory - suppose the program is stored in consecutive addresses, starting at address 0xA0.
+
+With the program stored in this manner, we can cause the machine to execute it by placing the address (0xA0) of the first instruction in the program counter and starting the machine
+
+The CPU begins the fetch step of the machine cycle by extracting the instruction stored in main memory at location 0xA0 and placing this instruction (0x156C) in its instruction register
+
+Notice that, in our machine, instructions are 16 bits (two bytes) long. Thus, the entire instruction to be fetched occupies the memory cells at both address 0xA0 and 0xA1
+
+![The program stored in main memory ready for execution](images/machine-cycle-execution.png)
+
+The CPU is designed to take this into account, so it retrieves the contents of both cells and places the bit patterns received in the instruction register, which is 16 bits long.
+
+The CPU then adds two to the program counter so that this register contains the address of the next instruction
+
+At the end of the fetch step of the first machine cycle, the program counter and instruction register contain the following data:
+
+```Program Counter: 0xA2```
+
+```Instruction Register: 0x156C```
+
+Next, the CPU analyzes the instruction in its instruction register and concludes that it is to load register 0x5 with the contents of the memory cell at address 0x6C. This load activity is performed during the execution step of the machine cycle, and the CPU then begins the next cycle.
+
+![Performing the fetch step of the machine cycle](images/machine-cycle-fetch.png)
+
+This cycle begins by fetching the instruction 0x166D from the two memory cells starting at address 0xA2. The CPU places this instruction in the instruction register and increments the program counter to 0xA4. The values in the program counter and instruction register therefore become the following:
+
+```Program Counter: 0xA4```
+
+```Instruction Register: 0x166D```
+
+Now the CPU decodes the instruction 0x166D and determines that it is to load register 0x6 with the contents of memory address 0x6D. It then executes the instruction. It is at this time that register 0x6 is actually loaded.
+
+Since the program counter now contains 0xA4, the CPU extracts the next instruction starting at this address.
+
+The result is that 0x5056 is placed in the instruction register, and the program counter is incremented to 0xA6.
+
+The CPU now decodes the contents of its instruction register and executes it by activating the two’s complement addition circuitry with inputs being registers 0x5 and 0x6.
+
+During this execution step, the arithmetic/logic unit performs the requested addition, leaves the result in register 0x0 (as requested by the control unit), and reports to the control unit that it has finished.
+
+The CPU then begins another machine cycle.
+
+Once again, with the aid of the program counter, it fetches the next instruction (0x306E) from the two memory cells starting at memory location 0xA6 and increments the program counter to 0xA8. This instruction is then decoded and executed. At this point, the sum is placed in memory location 0x6E.
+
+The next instruction is fetched starting from memory location 0xA8, and the program counter is incremented to 0xAA. The contents of the instruction register (0xC000) are now decoded as the halt instruction. Consequently, the machine stops during the execute step of the machine cycle, and the program is completed.
