@@ -523,3 +523,255 @@ Error-correcting techniques are used extensively to increase the reliability of 
 
 - high-capacity magnetic disk drives
 - CDs
+
+# Data Manipulation
+
+## Computer Architecture
+
+The circuitry in a computer that controls the manipulation of data is called the **central processing unit**, or **CPU**.
+
+The CPUs found in today’s desktop computers and notebooks are packaged as small flat squares that would fit in the palm of one’s hand and whose **connecting pins** plug into a socket mounted on the machine’s **main circuit board** (called the **motherboard**). In smartphones, tablets, and other mobile computing devices, CPU’s are around half the size of a postage stamp. Due to their small size, these processors are called **microprocessors**.
+
+### CPU Basics
+
+A CPU consists of three parts:
+
+the **arithmetic/logic unit**
+
+- contains the circuitry that performs operations on data (such as addition and subtraction)
+
+the **control unit**
+
+- contains the circuitry for coordinating the machine’s activities
+
+the **register unit**
+
+- contains data storage cells (similar to main memory cells), called **registers**, that are used for temporary storage of information within the CPU
+
+- Some of the registers within the register unit are considered **general-purpose registers** whereas others are **special-purpose registers**
+
+![CPU and main memory connected via a bus](images/cpu-3-parts.png)
+
+**General-purpose registers**
+
+- serve as temporary holding places for data being manipulated by the CPU
+- hold the inputs to the arithmetic/logic unit’s circuitry and provide storage space for results produced by that unit
+
+**To perform an operation on data stored in main memory**
+
+- the control unit transfers the data from memory into the general-purpose registers
+- informs the arithmetic/logic unit which registers hold the data
+- activates the appropriate circuitry within the arithmetic/logic unit, and tells the arithmetic/logic unit which register should receive the result.
+
+For the purpose of transferring bit patterns, a machine’s CPU and main memory are connected by a collection of wires or traces called a **bus**
+
+**Through this bus**
+
+- the CPU extracts (reads) data from main memory by supplying the address of the pertinent/relevant memory cell along with an electronic signal telling the memory circuitry that it is supposed to retrieve the data in the indicated cell
+
+- the CPU places (writes) data in memory by providing the address of the destination cell and the data to be stored together with the appropriate electronic signal telling main memory that it is supposed to store the data being sent to it
+
+Based on this design, the task of adding two values stored in main memory involves more than the mere execution of the addition operation.
+
+- The data must be transferred from main memory to registers within the CPU
+- the values must be added with the result being placed in a register
+- and the result must then be stored in a memory cell.
+
+![Adding values stored in memory](images/cpu-add-from-memory.png)
+
+### The Stored-Program Concept
+
+A program, just like data, can be encoded as a sequence of bits and stored in main memory.
+
+If the control unit is designed to extract the program from memory, decode the instructions, and execute them, then the program that the machine follows can be changed merely by changing the contents of the computer’s memory instead of rewiring the CPU
+
+    Essential Knowledge Statements
+
+    A sequence of bits may represent instructions or data.
+
+The idea of storing a computer’s program in its main memory is called the **stored-program concept**
+
+Originally everyone thought of programs and data as different entities:
+
+- Data were stored in memory; programs were part of the CPU
+
+In early computers, the steps that each device executed were built into the control unit as a part of the machine.
+
+- early electronic computers were designed so that the CPU could be conveniently rewired
+- the program that the machine followed could be changed by rewiring the CPU
+
+```
+Cache Memory
+
+It is instructive to compare the memory facilities within a computer in relation to their functionality.
+
+- Registers are used to hold the data immediately applicable to the operation at hand
+- main memory is used to hold data that will be needed in the near future
+- mass storage is used to hold data that will likely not be needed in the immediate future
+
+Many machines are designed with an additional memory level, called cache memory.
+Cache memory is a portion (perhaps several hundred KB) of high-speed memory located within the CPU itself.
+
+In this special memory area, the machine attempts to keep a copy of that portion of main memory that is of current interest. In this setting, data transfers that normally would be made between registers and main memory are made between registers and cache memory.
+
+Any changes made to cache memory are then transferred collectively to main memory at a more opportune time.
+The result is a CPU that can execute its machine cycle more rapidly because it is not delayed by main memory communication.
+```
+
+## Machine Language
+
+To apply the stored-program concept, CPUs are designed to recognize instructions encoded as bit patterns.
+
+This collection of instructions along with the encoding system is called the **machine language**.
+
+An instruction expressed in this language is called a machine-level instruction or, more commonly, a **machine instruction**.
+
+### The Instruction Repertoire
+
+The list of machine instructions that a typical CPU must be able to decode and execute is quite short.
+
+Once a machine can perform certain elementary but well-chosen tasks, adding more features does not increase the machine’s theoretical capabilities.
+
+- beyond a certain point, additional features may increase such things as convenience but add nothing to the machine’s fundamental capabilities.
+
+-----
+
+**Two philosophies of CPU architecture**:
+
+**reduced instruction set computer (RISC)**
+
+- a CPU should be designed to execute a minimal set of machine instructions
+- RISC architecture - such a machine is efficient, fast, and less expensive to manufacture
+
+**complex instruction set computer (CISC)**
+
+- the ability to execute a large number of complex instructions, even though many of them are technically redundant
+- CISC architecture - the more complex CPU can better cope with the ever-increasing complexities of today’s software
+- programs can exploit a powerful, rich set of instructions, many of which would require a multi-instruction sequence in a RISC design
+
+------
+
+Intel processors, used in PCs, are examples of CISC architecture;
+
+PowerPC processors (developed by an alliance between Apple, IBM, and Motorola) are examples of RISC architecture and were used in the Apple Macintosh
+
+As time progressed, the manufacturing cost of CISC was drastically reduced; thus Intel’s processors (or their equivalent from AMD—Advanced Micro Devices, Inc.) are now found in virtually all desktop and laptop computers (even Apple is now building computers based on Intel products).
+
+While CISC secured its place in desktop computers, it has an insatiable thirst for electrical power.
+
+In contrast, the company Advanced RISC Machine (ARM) has designed a RISC architecture specifically for low power consumption.
+
+- Thus, ARM-based processors, manufactured by a host of vendors are readily found in game controllers, digital TVs, navigation systems, automotive modules, smartphones, and other consumer electronics.
+
+**Regardless of the choice between RISC and CISC, a machine’s instructions can be categorized into three groupings:**
+
+- (1) the data transfer group
+- (2) the arithmetic/logic group
+- (3) the control group.
+
+### Data Transfer
+
+The data transfer group consists of instructions that request the movement of data from one location to another.
+
+**NOTE** using terms such as transfer or move to identify this group of instructions is actually a misnomer (inaccurate name).
+
+- It is rare that the data being transferred is erased from its original location
+- The process involved in a transfer instruction is more like copying the data rather than moving it
+- terms such as copy or clone better describe the actions of this group of instructions
+
+**special terms are used when referring to the transfer of data between the CPU and main memory**
+
+- A request to fill a general-purpose register with the contents of a memory cell is commonly referred to as a ```LOAD``` instruction
+- a request to transfer the contents of a register to a memory cell is called a ```STORE``` instruction
+
+An important group of instructions within the data transfer category consists of the commands for communicating with devices outside the CPU-main memory context (printers, keyboards, display screens, disk drives, etc.).
+
+Since these instructions handle the input/output (I/O) activities of the machine, they are called **I/O instructions**
+
+### Arithmetic/Logic
+
+The arithmetic/logic group consists of the instructions that tell the control unit to request an activity within the arithmetic/logic unit.
+
+The arithmetic/logic unit is capable of performing operations other than the basic arithmetic operations.
+
+- Some of these additional operations are the Boolean operations ```AND```, ```OR```, and ```XOR```
+
+Another collection of operations available within most arithmetic/logic units allows the contents of registers to be moved to the right or the left within the register.
+
+These operations are known as either ```SHIFT``` or ```ROTATE``` operations:
+
+- ```SHIFT``` - the bits that “fall off the end” of the register are merely discarded
+- ```ROTATE``` - the bits that “fall off the end” of the register are used to fill the holes left at the other end
+
+### Control
+
+The control group consists of those instructions that direct the execution of the program rather than the manipulation of data.
+
+This group contains many of the more interesting instructions in a machine’s repertoire:
+
+**the family of ```JUMP``` (or ```BRANCH```) instructions**:
+
+used to direct the CPU to execute an instruction other than the next one in the list.
+
+These JUMP instructions appear in two varieties: **unconditional jumps** and **conditional jumps**.
+
+An example of the unconditional jump would be: "Skip to Step 5"
+
+An example of the conditional jump would be: "If the value obtained is 0, then skip to Step 5."
+
+The distinction is that a conditional jump results in a "change of venue" only if a certain condition is satisfied
+
+### Vole: An Illustrative Machine Language
+
+Let us now consider how the instructions of a typical computer are encoded. We shall call the machine that we will use for our discussion the **Vole**
+
+This hypothetical Vole processor has:
+
+- 16 general-purpose registers
+- 256 main memory cells, each with a capacity of 8 bits
+
+For referencing purposes, we label the registers with the values 0 through 15 and address the memory cells with the values 0 through 255.
+
+![Dividing values stored in memory](images/dividing-machine-language.png)
+
+![The architecture of the Vole](images/architecture-vole.png)
+
+For convenience, we think of these labels and addresses as values represented in base two and compress the resulting bit patterns using hexadecimal notation.
+
+The encoded version of a machine instruction consists of two parts: the **op-code** (short for operation code) field and the **operand** field.
+
+- The bit pattern appearing in the op-code field indicates which of the elementary operations, such as ```STORE```, ```SHIFT```, ```XOR```, and ```JUMP```, is requested by the instruction.
+- The bit patterns found in the operand field provide more detailed information about the operation specified by the op-code.
+
+The entire machine language of our Vole machine consists of only twelve basic instructions.
+
+- Each of these instructions is encoded using a total of 16 bits, represented by four hexadecimal digits
+- The op-code for each instruction consists of the first 4 bits or, equivalently, the first hexadecimal digit
+- The operand field of each instruction on the Vole consists of three hexadecimal digits (12 bits), and in each case (except for the ```HALT``` instruction, which needs no further refinement) clarifies the general instruction given by the op-code.
+
+![The composition of a Vole instruction](images/vole-machine-instruction.png)
+
+![Decoding the instruction 0x35A7](images/vole-decode-instruction.png)
+
+Registers and main memory cells make no distinctions between the types of data they store; how a binary sequence is interpreted depends entirely upon the operations applied to it.
+
+**NOTE** In reality, the instruction 0x35A7 is the bit pattern 0011010110100111.
+
+| Op-code | Operand | Description                                                                                                                                                                                                                                                                 |
+| ------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `0x1`   | `RXY`   | **LOAD** register `R` with the bit pattern found in the memory cell whose address is `XY`. **Example:** `0x14A3` → contents of memory address `0xA3` are placed in register `0x4`.                                                                                          |
+| `0x2`   | `RXY`   | **LOAD** register `R` with the bit pattern `XY`. **Example:** `0x20A3` → value `0xA3` is placed in register `0`.                                                                                                                                                            |
+| `0x3`   | `RXY`   | **STORE** the bit pattern found in register `R` in the memory cell whose address is `XY`. **Example:** `0x35B1` → contents of register `0x5` are stored at memory address `0xB1`.                                                                                           |
+| `0x4`   | `0RS`   | **MOVE** the bit pattern found in register `R` to register `S`. **Example:** `0x40A4` → contents of register `0xA` are copied into register `0x4`.                                                                                                                          |
+| `0x5`   | `RST`   | **ADD** the bit patterns in registers `S` and `T` as **two's complement** representations and leave the result in register `R`. **Example:** `0x5726` → registers `0x2` and `0x6` are added; result goes into register `0x7`.                                               |
+| `0x6`   | `RST`   | **ADD** the bit patterns in registers `S` and `T` as **floating-point** values and leave the result in register `R`. **Example:** `0x634E` → registers `0x4` and `0xE` are added as floating-point values; result goes into register `0x3`.                                 |
+| `0x7`   | `RST`   | **OR** the bit patterns in registers `S` and `T` and place the result in register `R`. **Example:** `0x7CB4` → registers `0xB` and `0x4` are ORed; result goes into register `0xC`.                                                                                         |
+| `0x8`   | `RST`   | **AND** the bit patterns in registers `S` and `T` and place the result in register `R`. **Example:** `0x8045` → registers `0x4` and `0x5` are ANDed; result goes into register `0x0`.                                                                                       |
+| `0x9`   | `RST`   | **XOR** the bit patterns in registers `S` and `T` and place the result in register `R`. **Example:** `0x95F3` → registers `0xF` and `0x3` are XORed; result goes into register `0x5`.                                                                                       |
+| `0xA`   | `R0X`   | **ROTATE** the bit pattern in register `R` one bit to the right `X` times. Each time, the bit at the low-order end is moved to the high-order end. **Example:** `0xA403` → contents of register `0x4` are rotated 3 bits to the right.                                      |
+| `0xB`   | `RXY`   | **JUMP** to the instruction at memory address `XY` if the bit pattern in register `R` equals the bit pattern in register `0`. Otherwise, continue normally. **Example:** `0xB43C` → compare registers `0x4` and `0x0`; if equal, `0x3C` is copied into the program counter. |
+| `0xC`   | `000`   | **HALT** execution. **Example:** `0xC000` → program execution stops.  |
+
+![An encoded version of instructions](images/vole-encoded-instructions.png)
+
+## Program Execution
