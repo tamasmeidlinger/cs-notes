@@ -757,20 +757,7 @@ Registers and main memory cells make no distinctions between the types of data t
 
 **NOTE** In reality, the instruction 0x35A7 is the bit pattern 0011010110100111.
 
-| Op-code | Operand | Description                                                                                                                                                                                                                                                                 |
-| ------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `0x1`   | `RXY`   | **LOAD** register `R` with the bit pattern found in the memory cell whose address is `XY`. **Example:** `0x14A3` → contents of memory address `0xA3` are placed in register `0x4`.                                                                                          |
-| `0x2`   | `RXY`   | **LOAD** register `R` with the bit pattern `XY`. **Example:** `0x20A3` → value `0xA3` is placed in register `0`.                                                                                                                                                            |
-| `0x3`   | `RXY`   | **STORE** the bit pattern found in register `R` in the memory cell whose address is `XY`. **Example:** `0x35B1` → contents of register `0x5` are stored at memory address `0xB1`.                                                                                           |
-| `0x4`   | `0RS`   | **MOVE** the bit pattern found in register `R` to register `S`. **Example:** `0x40A4` → contents of register `0xA` are copied into register `0x4`.                                                                                                                          |
-| `0x5`   | `RST`   | **ADD** the bit patterns in registers `S` and `T` as **two's complement** representations and leave the result in register `R`. **Example:** `0x5726` → registers `0x2` and `0x6` are added; result goes into register `0x7`.                                               |
-| `0x6`   | `RST`   | **ADD** the bit patterns in registers `S` and `T` as **floating-point** values and leave the result in register `R`. **Example:** `0x634E` → registers `0x4` and `0xE` are added as floating-point values; result goes into register `0x3`.                                 |
-| `0x7`   | `RST`   | **OR** the bit patterns in registers `S` and `T` and place the result in register `R`. **Example:** `0x7CB4` → registers `0xB` and `0x4` are ORed; result goes into register `0xC`.                                                                                         |
-| `0x8`   | `RST`   | **AND** the bit patterns in registers `S` and `T` and place the result in register `R`. **Example:** `0x8045` → registers `0x4` and `0x5` are ANDed; result goes into register `0x0`.                                                                                       |
-| `0x9`   | `RST`   | **XOR** the bit patterns in registers `S` and `T` and place the result in register `R`. **Example:** `0x95F3` → registers `0xF` and `0x3` are XORed; result goes into register `0x5`.                                                                                       |
-| `0xA`   | `R0X`   | **ROTATE** the bit pattern in register `R` one bit to the right `X` times. Each time, the bit at the low-order end is moved to the high-order end. **Example:** `0xA403` → contents of register `0x4` are rotated 3 bits to the right.                                      |
-| `0xB`   | `RXY`   | **JUMP** to the instruction at memory address `XY` if the bit pattern in register `R` equals the bit pattern in register `0`. Otherwise, continue normally. **Example:** `0xB43C` → compare registers `0x4` and `0x0`; if equal, `0x3C` is copied into the program counter. |
-| `0xC`   | `000`   | **HALT** execution. **Example:** `0xC000` → program execution stops.  |
+![Vole Instruction Table](images/vole-instruction-table.png)
 
 ![An encoded version of instructions](images/vole-encoded-instructions.png)
 
