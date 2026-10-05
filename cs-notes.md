@@ -865,3 +865,41 @@ The CPU then begins another machine cycle.
 Once again, with the aid of the program counter, it fetches the next instruction (0x306E) from the two memory cells starting at memory location 0xA6 and increments the program counter to 0xA8. This instruction is then decoded and executed. At this point, the sum is placed in memory location 0x6E.
 
 The next instruction is fetched starting from memory location 0xA8, and the program counter is incremented to 0xAA. The contents of the instruction register (0xC000) are now decoded as the halt instruction. Consequently, the machine stops during the execute step of the machine cycle, and the program is completed.
+
+# Other
+
+## Links
+
+[Online Logic Gate Simulator](https://lgsim.io/app.html)
+
+[Vole Emulator](https://brookshear.jfagerberg.me/#)
+
+## Images
+
+![Allowed exam aids](images/allowed-exam-aids.png)
+
+![The role of algorithms](images/the-role-of-algorithms.png)
+
+![Two types of logic](images/types-of-logic.png)
+
+![IEEE 754 Floating Point Format](images/IEEE-754-floating-point-format.png)
+
+![Encoding text in UTF-8](images/encoding-text-utf-8.png)
+
+![Encoding text in UTF-8 Example](images/encoding-utf-8-example.png)
+
+![Logical Gates Notations](images/logical-gates-notations.png)
+
+![Numeral Systems](images/numeral-systems.png)
+
+![8-bit Floating-point Notation](images/8-bit-fp-notation.png)
+
+![Typical Computer Memory Hierarchy](images/computer-memory-hierarchy.png)
+
+![Machine/Assembler instruction/language definition](images/machine-assembler-language.png)
+
+![Machine Language Philosophies](images/machine-language-philosophies.png)
+
+![Machine Instruction Types](images/machine-instruction-types.png)
+
+![Vole Details](images/vole-details.png)
