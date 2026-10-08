@@ -32,6 +32,10 @@ under control of external stimuli.**
 
 ![Different version of a flip-flop circuit](images/flip-flop-3.png)
 
+![Two types of logic](images/types-of-logic.png)
+
+![Logical Gates Notations](images/logical-gates-notations.png)
+
     Essential knowledge
     - Binary data is processed by physical layers of computing hardware, including gates, chips, and components.
     - Hardware is built using multiple levels of abstractions, such as transistors, logic gates, chips, memory, motherboards, special purposes cards, and storage devices.
@@ -185,6 +189,10 @@ When the **Unicode character set** is combined with the **Unicode Transformation
 
 A file consisting of a long sequence of symbols encoded using ASCII or Unicode is often called a **text file**
 
+![Encoding text in UTF-8](images/encoding-text-utf-8.png)
+
+![Encoding text in UTF-8 Example](images/encoding-utf-8-example.png)
+
 ### Representing Numeric Values
 
 Storing information in terms of encoded characters is inefficient when the information being recorded is purely numeric.
@@ -293,6 +301,10 @@ Another method of representing integer values is **excess notation**
 
 ![An excess eight conversion table](images/excess-notation.png)
 
+### Summary
+
+![Numeral Systems](images/numeral-systems.png)
+
 ## Storing Fractions
 
 ### Floating-Point Notation
@@ -354,6 +366,11 @@ Another form, called **Double Precision Floating Point**, uses 64 bits and provi
 
 ![Truncation Error](images/truncation-error.png)
 
+### Additional information
+
+![IEEE 754 Floating Point Format](images/IEEE-754-floating-point-format.png)
+
+![8-bit Floating-point Notation](images/8-bit-fp-notation.png)
 ## Data Compression
 
 **data compression** - to reduce the size of the data involved while retaining the underlying information
@@ -618,6 +635,8 @@ Any changes made to cache memory are then transferred collectively to main memor
 The result is a CPU that can execute its machine cycle more rapidly because it is not delayed by main memory communication.
 ```
 
+![Typical Computer Memory Hierarchy](images/computer-memory-hierarchy.png)
+
 ## Machine Language
 
 To apply the stored-program concept, CPUs are designed to recognize instructions encoded as bit patterns.
@@ -625,6 +644,8 @@ To apply the stored-program concept, CPUs are designed to recognize instructions
 This collection of instructions along with the encoding system is called the **machine language**.
 
 An instruction expressed in this language is called a machine-level instruction or, more commonly, a **machine instruction**.
+
+![Machine/Assembler instruction/language definition](images/machine-assembler-language.png)
 
 ### The Instruction Repertoire
 
@@ -649,6 +670,8 @@ Once a machine can perform certain elementary but well-chosen tasks, adding more
 - CISC architecture - the more complex CPU can better cope with the ever-increasing complexities of today’s software
 - programs can exploit a powerful, rich set of instructions, many of which would require a multi-instruction sequence in a RISC design
 
+![Machine Language Philosophies](images/machine-language-philosophies.png)
+
 ------
 
 Intel processors, used in PCs, are examples of CISC architecture;
@@ -668,6 +691,8 @@ In contrast, the company Advanced RISC Machine (ARM) has designed a RISC archite
 - (1) the data transfer group
 - (2) the arithmetic/logic group
 - (3) the control group.
+
+![Machine Instruction Types](images/machine-instruction-types.png)
 
 ### Data Transfer
 
@@ -729,6 +754,8 @@ This hypothetical Vole processor has:
 
 - 16 general-purpose registers
 - 256 main memory cells, each with a capacity of 8 bits
+
+![Vole Details](images/vole-details.png)
 
 For referencing purposes, we label the registers with the values 0 through 15 and address the memory cells with the values 0 through 255.
 
@@ -879,27 +906,3 @@ The next instruction is fetched starting from memory location 0xA8, and the prog
 ![Allowed exam aids](images/allowed-exam-aids.png)
 
 ![The role of algorithms](images/the-role-of-algorithms.png)
-
-![Two types of logic](images/types-of-logic.png)
-
-![IEEE 754 Floating Point Format](images/IEEE-754-floating-point-format.png)
-
-![Encoding text in UTF-8](images/encoding-text-utf-8.png)
-
-![Encoding text in UTF-8 Example](images/encoding-utf-8-example.png)
-
-![Logical Gates Notations](images/logical-gates-notations.png)
-
-![Numeral Systems](images/numeral-systems.png)
-
-![8-bit Floating-point Notation](images/8-bit-fp-notation.png)
-
-![Typical Computer Memory Hierarchy](images/computer-memory-hierarchy.png)
-
-![Machine/Assembler instruction/language definition](images/machine-assembler-language.png)
-
-![Machine Language Philosophies](images/machine-language-philosophies.png)
-
-![Machine Instruction Types](images/machine-instruction-types.png)
-
-![Vole Details](images/vole-details.png)
