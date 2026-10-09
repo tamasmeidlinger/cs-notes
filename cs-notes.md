@@ -1,3 +1,11 @@
+---
+title: "CS Notes"
+---
+
+```{=typst}
+#pagebreak()
+```
+
 # Data Storage
 
 ## Bits and their storage

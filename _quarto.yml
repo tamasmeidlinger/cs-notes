@@ -3,7 +3,12 @@ format:
     toc: true
     toc-depth: 3
     number-sections: true
+    fontsize: 16pt
+    page-numbering: false
     include-in-header: dark-mode.typ
+    margin:
+      x: 1.5cm
+      y: 1cm
 
 metadata:
   section-numbering: 1.1.1
