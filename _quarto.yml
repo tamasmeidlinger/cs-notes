@@ -5,7 +5,7 @@ format:
     number-sections: true
     fontsize: 16pt
     page-numbering: false
-    include-in-header: dark-mode.typ
+    # include-in-header: dark-mode.typ
     margin:
       x: 1.5cm
       y: 1cm

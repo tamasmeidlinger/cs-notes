@@ -19,6 +19,7 @@ Bit Patterns are used to represent information.
 
 A device that produces the output of a Boolean operation when given the
 operation’s input values is called a **gate**, or sometimes a **logic gate**.
+
 - **A logic gate is a hardware abstraction that is modeled by a Boolean function.**
 
 ![Logical Gates](images/logical-gates.png)
@@ -32,7 +33,7 @@ a 1 that returns to 0) from another circuit causes it to shift to the other
 value.
 
 - **In other words, the output can be set to “remember” a zero or a one
-under control of external stimuli.**
+  under control of external stimuli.**
 
 ![Flip-flop circuit](images/flip-flop-1.png)
 
@@ -58,9 +59,9 @@ shorthand notation called **hexadecimal notation**
 - bit patterns within a machine tend to have lengths in multiples of four
 - hexadecimal notation uses a single symbol to represent a pattern of four bits
 - math subscripts to indicate the base of a non-decimal number
-    - the hexadecimal value for $15_{10}$ is $F_{16}$
+  - the hexadecimal value for $15_{10}$ is $F_{16}$
 - the common prefix “0x” in front of our
-hexadecimal numbers
+  hexadecimal numbers
 
 ![Hexadecimal Encoding System](images/hexadecimal-encoding-system.png)
 
@@ -80,10 +81,9 @@ Although there is no left or right within a computer, we normally envision the b
 - Such an addressing system not only gives us a way of uniquely identifying each cell but also associates an order to the cells such as "the next cell" or "the previous cell."
 - Assigning an order to both the cells in main memory and the bits within each cell makes the entire collection of bits within a computer’s main memory is essentially ordered in one long row
 - Pieces of
-this long row can therefore be used to store bit patterns that may be longer
-than the length of a single cell
-    - store a string of 16
-bits merely by using two consecutive memory cells
+  this long row can therefore be used to store bit patterns that may be longer
+  than the length of a single cell - store a string of 16
+  bits merely by using two consecutive memory cells
 
 ![Memory cells and addresses](/images/memory-cells-addresses.png)
 
@@ -93,14 +93,14 @@ Because a computer’s main memory is organized as individual, addressable cells
 
 It is convenient to design main memory systems in which the total number of cells is a power of two.
 
-| Unit | Symbol | Equivalent |
-|---|---:|---:|
-| Bit | bit (b) | 0 or 1 |
-| Byte | B | 8 bits |
-| Kibibyte | KiB | 1,024 B = 2¹⁰ B |
-| Mebibyte | MiB | 1,024 KiB = 2²⁰ B |
-| Gibibyte | GiB | 1,024 MiB = 2³⁰ B |
-| Tebibyte | TiB | 1,024 GiB = 2⁴⁰ B |
+| Unit     |  Symbol |        Equivalent |
+| -------- | ------: | ----------------: |
+| Bit      | bit (b) |            0 or 1 |
+| Byte     |       B |            8 bits |
+| Kibibyte |     KiB |   1,024 B = 2¹⁰ B |
+| Mebibyte |     MiB | 1,024 KiB = 2²⁰ B |
+| Gibibyte |     GiB | 1,024 MiB = 2³⁰ B |
+| Tebibyte |     TiB | 1,024 GiB = 2⁴⁰ B |
 
 **Important:** KB, MB, GB technically refer to decimal units (1,000), while KiB, MiB, GiB are binary units (1,024). For computer memory, the binary units are often what you want.
 
@@ -129,20 +129,20 @@ The most common example in use today is the magnetic disk or hard disk drive (HD
 Another class of mass storage systems applies optical technology.
 
 - **Compact Disk (CD)**
-    - These disks are 12 centimeters (approximately 5 inches) in diameter and consist of reflective material covered with a clear protective coating.
-    - Information is recorded on them by creating variations in their reflective surfaces.
-    - This information can then be retrieved by means of a laser that detects irregularities on the reflective surface of the CD as it spins.
-    - Traditional CDs have capacities in the range of 600 to 700MB
+  - These disks are 12 centimeters (approximately 5 inches) in diameter and consist of reflective material covered with a clear protective coating.
+  - Information is recorded on them by creating variations in their reflective surfaces.
+  - This information can then be retrieved by means of a laser that detects irregularities on the reflective surface of the CD as it spins.
+  - Traditional CDs have capacities in the range of 600 to 700MB
 
 ![CD storage format](images/cd-storage.png)
 
 - **DVDs (Digital Versatile Disks)**
-    - are constructed from multiple, semi-transparent layers that serve as distinct surfaces when viewed by a precisely focused laser
-    - provide storage capacities of several GB
+  - are constructed from multiple, semi-transparent layers that serve as distinct surfaces when viewed by a precisely focused laser
+  - provide storage capacities of several GB
 
 - **BDs (Blu-ray Disks)**
-    - Uses Blu-ray technology, which uses a laser in the blue-violet spectrum of light (instead of red), is able to focus its laser beam with very fine precision.
-    - provide over five times the capacity of a DVD
+  - Uses Blu-ray technology, which uses a laser in the blue-violet spectrum of light (instead of red), is able to focus its laser beam with very fine precision.
+  - provide over five times the capacity of a DVD
 
 ### Flash Drives
 
@@ -160,7 +160,7 @@ Although data stored in flash memory systems can be accessed in small, byte-size
 
 **Devices:**
 
-Flash memory devices called ***flash drives***, with capacities of hundreds of GBs, are available for general mass storage applications
+Flash memory devices called **_flash drives_**, with capacities of hundreds of GBs, are available for general mass storage applications
 
 Larger flash memory devices called **SSDs (solid-state drives)** are explicitly designed to take the place of magnetic hard disks.
 
@@ -179,12 +179,14 @@ Another application of flash technology is found in **SD (Secure Digital)memory 
 Information in the form of text is normally represented by means of a code in which each of the different symbols in the text (such as the letters of the alphabet and punctuation marks) is assigned a unique bit pattern. The text is then represented as a long string of bits in which the successive patterns represent the successive symbols in the original text.
 
 **ASCII** (American Standard Code for Information Interchange)
+
 - uses bit patterns of length seven
 - extended to an eight-bit-per-symbol format by adding a 0 at the most significant end of each of the seven-bit patterns
 
 ![ASCII "Hello"](images/ascii-hello.png)
 
 **Unicode**
+
 - uses a unique pattern of up to 21 bits to represent each symbol
 
 **Unicode Transformation Format 8-bit (UTF-8)**
@@ -246,7 +248,7 @@ To extend binary notation to accommodate fractional values, we use a radix point
 
 - digits to the left of the point represent the integer part (whole part)
 - digits to the right represent the fractional part of the value
-    - their positions are assigned fractional quantities
+  - their positions are assigned fractional quantities
 
 ![Fractions in binary](images/fractions-in-binary.png)
 
@@ -263,7 +265,7 @@ There is a convenient relationship between positive and negative values of the s
 
 - They are identical when read from right to left, up to and including the first 1
 - From there on, the patterns are complements of one another
-    - The complement of a pattern is the pattern obtained by reversing the values: 0 -> 1, 1 -> 0
+  - The complement of a pattern is the pattern obtained by reversing the values: 0 -> 1, 1 -> 0
 
 ![Encoding the value - 6 in two’s complement notation using 4 bits](images/twos-complement-rel.png)
 
@@ -278,7 +280,7 @@ A major benefit of two’s complement notation:
 - 7 - 5 can be written as 7 + (-5)
 - a machine using two’s complement notation needs to know only how to add
 - a circuit for addition combined with a circuit for negating a
-value is sufficient for solving both addition and subtraction problems
+  value is sufficient for solving both addition and subtraction problems
 
 ![Subtraction with two's complement](images/twos-complement-subtraction.png)
 
@@ -323,8 +325,8 @@ Stores not only the pattern of 0s and 1s representing its binary representation 
 
 1. We first designate the high-order bit of the byte as the sign bit - 0 means nonnegative
 2. We divide the remaining 7 bits of the byte into two groups
-    - the exponent field
-    - the mantissa field
+   - the exponent field
+   - the mantissa field
 3. Designate the 3 bits following the sign bit as the exponent field and the remaining 4 bits as the mantissa field
 
 ![Floating-point notation components](images/floating-point.png)
@@ -335,9 +337,9 @@ Suppose a byte consists of the bit pattern 01101011
 
 1. We first extract the mantissa and place a radix point on its left side, obtaining: **.1011**
 2. Extract the contents of the exponent field (110) and interpret it as an integer stored using the 3-bit excess method
-    - Thus, the pattern in the exponent field in our example represents a positive 2
-    - This tells us to move the radix in our solution to the right by 2 bits
-    - A negative exponent would mean to move the radix to the left
+   - Thus, the pattern in the exponent field in our example represents a positive 2
+   - This tells us to move the radix in our solution to the right by 2 bits
+   - A negative exponent would mean to move the radix to the left
 3. **We obtain 10.11** which is the binary representation for 2.75
 
 **To store a value using floating-point notation, we reverse the preceding process**
@@ -346,11 +348,11 @@ To encode 1.125 -> (1 + 1/8):
 
 1. We express it in binary notation and obtain 1.001
 2. We copy the bit pattern into the mantissa field from left to right, **starting with the leftmost 1** in the binary representation
-    - At this point, the byte looks like this: ____1001
+   - At this point, the byte looks like this: \_\_\_\_1001
 3. Fill in the exponent field
-    1. we imagine the contents of the mantissa field with a radix point at its left
-    2. determine the number of bits and the direction the radix must be moved to obtain the original binary number
-    3. write that number in excess notation (3bits) -> 101
+   1. we imagine the contents of the mantissa field with a radix point at its left
+   2. determine the number of bits and the direction the radix must be moved to obtain the original binary number
+   3. write that number in excess notation (3bits) -> 101
 4. We fill the sign bit with 0 because the value being stored is nonnegative -> 0.101.1001
 
 **IMPORTANT**
@@ -359,9 +361,9 @@ The rule is to copy the bit pattern appearing in the binary representation from 
 To clarify, consider the process of storing the value 3/8, which is .011 in binary notation.
 In this case, the mantissa will be:
 
-____1100
+\_\_\_\_1100
 
-NOT ____0110
+NOT \_\_\_\_0110
 
 Representations that conform to this rule are said to be in normalized form.
 
@@ -379,6 +381,7 @@ Another form, called **Double Precision Floating Point**, uses 64 bits and provi
 ![IEEE 754 Floating Point Format](images/IEEE-754-floating-point-format.png)
 
 ![8-bit Floating-point Notation](images/8-bit-fp-notation.png)
+
 ## Data Compression
 
 **data compression** - to reduce the size of the data involved while retaining the underlying information
@@ -386,9 +389,10 @@ Another form, called **Double Precision Floating Point**, uses 64 bits and provi
 ### Generic Data Compression Techniques
 
 Data compression schemes fall into two categories:
+
 1. **lossless** schemes - do not lose information in the compression process
 2. **lossy** schemes - may lead to the loss of information but often provide more compression than lossless ones
-    - popular in settings in which minor errors can be tolerated, as in the case of images and audio
+   - popular in settings in which minor errors can be tolerated, as in the case of images and audio
 
 **1. run-length encoding**
 
@@ -400,7 +404,7 @@ Data compression schemes fall into two categories:
 
 - lossless
 - a system in which the length of the bit pattern used to represent a data item is inversely related to the frequency of the item’s use
-    - **The more often something appears, the fewer bits we use to represent it.**
+  - **The more often something appears, the fewer bits we use to represent it.**
 
 **3. relative encoding, aka differential encoding**
 
@@ -474,10 +478,10 @@ In contrast to the goals of compression in other settings, the goal of compressi
 
 - speeds are normally measured in **bits per second (bps)**
 
-| Unit | Name | Bits per second |
-|---|---|---:|
-| Kbps | Kilobits per second | 1,000 bps |
-| Mbps | Megabits per second | 1,000,000 bps |
+| Unit | Name                |   Bits per second |
+| ---- | ------------------- | ----------------: |
+| Kbps | Kilobits per second |         1,000 bps |
+| Mbps | Megabits per second |     1,000,000 bps |
 | Gbps | Gigabits per second | 1,000,000,000 bps |
 
 ## Communication Errors
@@ -534,9 +538,9 @@ The Hamming distance between the patterns representing A and B in the code is fo
 
 - The important feature of the code above is that any two patterns are separated by a Hamming distance of at least three.
 - If a single bit is modified in a pattern, the error can be detected since the result will not be a legal pattern.
-    - We must change at least 3 bits in any pattern before it will look like another legal pattern
-    - We can also figure out what the original pattern was.
-    - The modified pattern will be a Hamming distance of only one from its original form but at least two from any of the other legal patterns.
+  - We must change at least 3 bits in any pattern before it will look like another legal pattern
+  - We can also figure out what the original pattern was.
+  - The modified pattern will be a Hamming distance of only one from its original form but at least two from any of the other legal patterns.
 
 ![Decoding the pattern 010100 using the code above](images/hamming-distance-decoding.png)
 
@@ -663,7 +667,7 @@ Once a machine can perform certain elementary but well-chosen tasks, adding more
 
 - beyond a certain point, additional features may increase such things as convenience but add nothing to the machine’s fundamental capabilities.
 
------
+---
 
 **Two philosophies of CPU architecture**:
 
@@ -680,7 +684,7 @@ Once a machine can perform certain elementary but well-chosen tasks, adding more
 
 ![Machine Language Philosophies](images/machine-language-philosophies.png)
 
-------
+---
 
 Intel processors, used in PCs, are examples of CISC architecture;
 
@@ -714,8 +718,8 @@ The data transfer group consists of instructions that request the movement of da
 
 **special terms are used when referring to the transfer of data between the CPU and main memory**
 
-- A request to fill a general-purpose register with the contents of a memory cell is commonly referred to as a ```LOAD``` instruction
-- a request to transfer the contents of a register to a memory cell is called a ```STORE``` instruction
+- A request to fill a general-purpose register with the contents of a memory cell is commonly referred to as a `LOAD` instruction
+- a request to transfer the contents of a register to a memory cell is called a `STORE` instruction
 
 An important group of instructions within the data transfer category consists of the commands for communicating with devices outside the CPU-main memory context (printers, keyboards, display screens, disk drives, etc.).
 
@@ -727,14 +731,14 @@ The arithmetic/logic group consists of the instructions that tell the control un
 
 The arithmetic/logic unit is capable of performing operations other than the basic arithmetic operations.
 
-- Some of these additional operations are the Boolean operations ```AND```, ```OR```, and ```XOR```
+- Some of these additional operations are the Boolean operations `AND`, `OR`, and `XOR`
 
 Another collection of operations available within most arithmetic/logic units allows the contents of registers to be moved to the right or the left within the register.
 
-These operations are known as either ```SHIFT``` or ```ROTATE``` operations:
+These operations are known as either `SHIFT` or `ROTATE` operations:
 
-- ```SHIFT``` - the bits that “fall off the end” of the register are merely discarded
-- ```ROTATE``` - the bits that “fall off the end” of the register are used to fill the holes left at the other end
+- `SHIFT` - the bits that “fall off the end” of the register are merely discarded
+- `ROTATE` - the bits that “fall off the end” of the register are used to fill the holes left at the other end
 
 ### Control
 
@@ -742,7 +746,7 @@ The control group consists of those instructions that direct the execution of th
 
 This group contains many of the more interesting instructions in a machine’s repertoire:
 
-**the family of ```JUMP``` (or ```BRANCH```) instructions**:
+**the family of `JUMP` (or `BRANCH`) instructions**:
 
 used to direct the CPU to execute an instruction other than the next one in the list.
 
@@ -775,14 +779,14 @@ For convenience, we think of these labels and addresses as values represented in
 
 The encoded version of a machine instruction consists of two parts: the **op-code** (short for operation code) field and the **operand** field.
 
-- The bit pattern appearing in the op-code field indicates which of the elementary operations, such as ```STORE```, ```SHIFT```, ```XOR```, and ```JUMP```, is requested by the instruction.
+- The bit pattern appearing in the op-code field indicates which of the elementary operations, such as `STORE`, `SHIFT`, `XOR`, and `JUMP`, is requested by the instruction.
 - The bit patterns found in the operand field provide more detailed information about the operation specified by the op-code.
 
 The entire machine language of our Vole machine consists of only twelve basic instructions.
 
 - Each of these instructions is encoded using a total of 16 bits, represented by four hexadecimal digits
 - The op-code for each instruction consists of the first 4 bits or, equivalently, the first hexadecimal digit
-- The operand field of each instruction on the Vole consists of three hexadecimal digits (12 bits), and in each case (except for the ```HALT``` instruction, which needs no further refinement) clarifies the general instruction given by the op-code.
+- The operand field of each instruction on the Vole consists of three hexadecimal digits (12 bits), and in each case (except for the `HALT` instruction, which needs no further refinement) clarifies the general instruction given by the op-code.
 
 ![The composition of a Vole instruction](images/vole-machine-instruction.png)
 
@@ -802,9 +806,9 @@ A computer follows a program stored in its memory by copying the instructions fr
 
 Once in the CPU, each instruction is decoded and obeyed.
 
-The order in which the instructions are fetched from memory corresponds to the order in which the instructions are stored in memory unless otherwise altered by a ```JUMP``` instruction.
+The order in which the instructions are fetched from memory corresponds to the order in which the instructions are stored in memory unless otherwise altered by a `JUMP` instruction.
 
------
+---
 
 **Two of the special purpose registers within the CPU:**
 
@@ -814,7 +818,7 @@ The order in which the instructions are fetched from memory corresponds to the o
 
 - thereby serving as the machine’s way of keeping track of where it is in the program
 
------
+---
 
 The CPU performs its job by continually repeating an algorithm that guides it through a three-step process known as the **machine cycle**.
 
@@ -830,20 +834,20 @@ The steps in the machine cycle are **fetch**, **decode**, and **execute**
 
 - the instruction is now in the instruction register
 - CPU decodes the instruction
-    - which involves breaking the operand field into its proper components based on the instruction’s op-code
+  - which involves breaking the operand field into its proper components based on the instruction’s op-code
 
 **execute**
 
 - CPU then executes the instruction by activating the appropriate circuitry to perform the requested task
 
 - For example
-    - if the instruction is a load from memory
-        - the CPU sends the appropriate signals to main memory
-        - waits for main memory to send the data
-        - then places the data in the requested register
-    - if the instruction is for an arithmetic operation
-        -  the CPU activates the appropriate circuitry in the arithmetic/logic unit with the correct registers as inputs
-        - waits for the arithmetic/logic unit to compute the answer and place it in the appropriate register.
+  - if the instruction is a load from memory
+    - the CPU sends the appropriate signals to main memory
+    - waits for main memory to send the data
+    - then places the data in the requested register
+  - if the instruction is for an arithmetic operation
+    - the CPU activates the appropriate circuitry in the arithmetic/logic unit with the correct registers as inputs
+    - waits for the arithmetic/logic unit to compute the answer and place it in the appropriate register.
 
 Once the instruction in the instruction register has been executed, the CPU again begins the machine cycle with the fetch step. Observe that since the program counter was incremented at the end of the previous fetch, it again provides the CPU with the correct address.
 
@@ -871,9 +875,9 @@ The CPU then adds two to the program counter so that this register contains the 
 
 At the end of the fetch step of the first machine cycle, the program counter and instruction register contain the following data:
 
-```Program Counter: 0xA2```
+`Program Counter: 0xA2`
 
-```Instruction Register: 0x156C```
+`Instruction Register: 0x156C`
 
 Next, the CPU analyzes the instruction in its instruction register and concludes that it is to load register 0x5 with the contents of the memory cell at address 0x6C. This load activity is performed during the execution step of the machine cycle, and the CPU then begins the next cycle.
 
@@ -881,9 +885,9 @@ Next, the CPU analyzes the instruction in its instruction register and concludes
 
 This cycle begins by fetching the instruction 0x166D from the two memory cells starting at address 0xA2. The CPU places this instruction in the instruction register and increments the program counter to 0xA4. The values in the program counter and instruction register therefore become the following:
 
-```Program Counter: 0xA4```
+`Program Counter: 0xA4`
 
-```Instruction Register: 0x166D```
+`Instruction Register: 0x166D`
 
 Now the CPU decodes the instruction 0x166D and determines that it is to load register 0x6 with the contents of memory address 0x6D. It then executes the instruction. It is at this time that register 0x6 is actually loaded.
 
@@ -900,6 +904,43 @@ The CPU then begins another machine cycle.
 Once again, with the aid of the program counter, it fetches the next instruction (0x306E) from the two memory cells starting at memory location 0xA6 and increments the program counter to 0xA8. This instruction is then decoded and executed. At this point, the sum is placed in memory location 0x6E.
 
 The next instruction is fetched starting from memory location 0xA8, and the program counter is incremented to 0xAA. The contents of the instruction register (0xC000) are now decoded as the halt instruction. Consequently, the machine stops during the execute step of the machine cycle, and the program is completed.
+
+## Arithmetic/Logic Instructions
+
+### Logic Operations
+
+`AND`, `OR`, and `XOR` - operations that combine two input bits to produce a single output bit.
+
+These operations can be extended to **bitwise operations** that combine two strings of bits to produce a single output string by applying the basic operation to individual columns.
+
+![Bitwise AND, OR and XOR operations](images/bitwise-ops.png)
+
+One of the major uses of the `AND` operation is for placing 0s in one part of a bit pattern while not disturbing the other part.
+
+There are many applications for this in practice, such as filtering certain colors out of a digital image represented in the RGB format.
+
+What happens if the byte 00001111 is the first operand of an `AND` operation.
+
+- Without knowing the contents of the second operand, we still can conclude that the four most significant bits of the result will be 0s.
+- the four least significant bits of the result will be a copy of that part of the second operand
+
+![Bitwise AND Operation](images/bitwise-and-op.png)
+
+This use of the `AND` operation is an example of the process called **masking**. Here, one operand, called a **mask**, determines which part of the other operand will affect the result.
+
+`AND` operations are useful when manipulating other types of **bit map** besides images, whenever a string of bits is used in which each bit represents the presence or absence of a particular object.
+
+Where as the `AND` operation can be used to duplicate a part of a bit string while placing 0s in the nonduplicated part, the `OR` operation can be used to duplicate a part of a string while putting 1s in the nonduplicated part.
+
+![Bitwise OR Operation](images/bitwise-or-op.png)
+
+Consequently, whereas the mask 11011111 can be used with the `AND` operation to force a 0 in the third bit from the high-order end of a byte, the mask 00100000 can be used with the `OR` operation to force a 1 in that position.
+
+A major use of the `XOR` operation is in forming the complement of a bit string. `XOR`ing any byte with a mask of all 1s produces the complement of the byte.
+
+![Bitwise XOR Operation](images/bitwise-xor-op.png)
+
+### Rotation and Shift Operations
 
 # Other
 
