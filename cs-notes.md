@@ -942,6 +942,250 @@ A major use of the `XOR` operation is in forming the complement of a bit string.
 
 ### Rotation and Shift Operations
 
+Consider a register containing a byte of bits.
+If we shift its contents 1 bit to the right, we imagine the rightmost bit falling off the edge and a hole appearing at the leftmost end.
+What happens with this extra bit and the hole is the distinguishing feature among the various shift operations.
+
+**circular shift**, also called a **rotation**
+
+place the bit that fell off the right end in the hole at the left end
+
+**logical shift**
+
+discard the bit that falls off the edge and always fill the hole with a 0
+
+Such shifts to the **left** can be used for **multiplying** two’s complement representations by two. **Division** by two can be accomplished by shifting the binary string to the **right**.
+
+In either shift, care must be taken to preserve the sign bit when using certain notational systems. Thus, we often find right shifts that always fill the hole (which occurs at the sign bit position) with its original value.
+
+Shifts that leave the sign bit unchanged are sometimes called **arithmetic shifts**.
+
+### Arithmetic Operations
+
+Although we have already mentioned the arithmetic operations of add, subtract, multiply, and divide, a few loose ends should still be connected.
+
+First, we have already seen that subtraction can be simulated by means of addition and negation.
+Moreover, multiplication is merely repeated addition and division is repeated subtraction. (Six divided by two is three because three two’s can be subtracted from six.)
+For this reason, some small CPUs are designed with only the add or perhaps only the add and subtract instructions.
+
+## Communicating with Other Devices
+
+Main memory and the CPU form the core of a computer. In this section, we investigate how this core, which we will refer to as the computer, communicates with peripheral devices such as mass storage systems, printers, keyboards, mice, display screens, digital cameras, and even other computers.
+
+### The Role of Controllers
+
+Communication between a computer and other devices is normally handled
+through an intermediary apparatus known as a **controller**.
+
+In the case of a desktop computer, a controller may consist of circuitry permanently mounted on the computer’s motherboard or, for flexibility, it may take the form of an expansion board that plugs into a slot on the motherboard.
+
+In either case, the controller connects via cables to peripheral devices within the computer case or perhaps to a connector, called a **port**, on the back of the computer where external devices can be attached.
+
+These controllers are sometimes small computers themselves, each with its own memory circuitry and simple CPU that performs a program directing the activities of the controller.
+
+**A controller translates messages and data back and forth between forms compatible with the internal characteristics of the computer and those of the peripheral device to which it is attached.**
+
+**Meaning:**
+
+- **Controller**: A piece of hardware that manages communication between the computer and a device.
+- **Forms**: means formats or representations of data, the different ways the computer and a peripheral device represent and communicate information.
+- **Internal characteristics of the computer**: How the computer represents and processes data, and how it communicates internally.
+- **Peripheral device**: An external or additional device, such as a keyboard, mouse, printer, or storage drive.
+- **Translates messages and data**: Converts information into a form that each side can understand.
+
+Originally, each controller was designed for a particular type of device; thus, purchasing a new peripheral device often required the purchase of a new controller as well.
+
+As computers became more prevalent, and the number of available peripherals greatly increased, communication standards arose to allow a single controller to handle many kinds of devices.
+
+Successively faster versions of the **universal serial bus (USB)**, the **high definition multimedia interface (HDMI)** and **DisplayPort** are all examples of widely adopted standards for connecting peripheral devices to computers.
+
+A single USB controller can be used as the interface between a computer and any collection of USB-compatible devices.
+
+Each controller communicates with the computer itself by means of connections to the same bus that connects the computer’s CPU and main memory. From this position, it is able to monitor the signals being sent between the CPU and main memory as well as to inject its own signals onto the bus.
+
+A **bus** is a communication system that carries data, addresses, and control signals between computer components.
+
+There are three common categories of signals:
+
+| Bus signal | Purpose |
+|------------|---------|
+| Data | Carries the actual information |
+| Address | Identifies where data should be read from or written to |
+| Control | Coordinates operations, such as reads and writes |
+
+With this arrangement, the CPU is able to communicate with the controllers attached to the bus in the same manner that it communicates with main memory.
+
+**To send a bit pattern to a controller**:
+
+1. the bit pattern is first constructed in one of the CPU’s general-purpose registers
+2. an instruction similar to a `STORE` instruction is executed by the CPU to “store” the bit pattern in the controller
+
+Likewise, to receive a bit pattern from a controller, an instruction similar to a `LOAD` instruction is used.
+
+**memory-mapped I/O**
+
+In some computer designs, the transfer of data to and from controllers is directed by the same `LOAD` and `STORE` op-codes that are already provided for communication with main memory.
+
+In these cases, each controller is designed to respond to references to a unique set of addresses, while main memory is designed to ignore references to these locations.
+
+Thus, when the CPU sends a message on the bus to store a bit pattern at a memory location that is assigned to a controller, the bit pattern is actually “stored” in the controller rather than main memory. Likewise, if the CPU tries to read data from such a memory location, as in a LOAD instruction, it will receive a bit pattern from the controller rather than from memory.
+
+Such a communication system is called **memory-mapped I/O** because the computer’s input/output devices appear to the CPU to be in various memory locations.
+
+An alternative to memory-mapped I/O is to provide special op-codes in the machine language to direct transfers to and from controllers. Instructions with these op-codes are called I/O instructions. As an example, if Vole followed this approach, it might include an instruction such as 0xF5A3 to mean “`STORE` the contents of register 0x5 in the controller identified by the bit pattern 0xA3.”
+
+![Controllers attached to a machine’s bus](images/controllers-buses.png)
+
+![A conceptual representation of memory-mapped I/O](images/memory-mapped-io.png)
+
+### Direct Memory Access
+
+Since a controller is attached to a computer’s bus, it can carry on its own communication with main memory during those nanoseconds in which the CPU is not using the bus. This ability of a controller to access main memory is known as **direct memory access (DMA)**, and it is a significant asset to a computer’s performance.
+
+ For instance, to retrieve data from a sector of a disk:
+
+ 1. the CPU can send requests encoded as bit patterns to the controller attached to the disk, asking the controller to read the sector and place the data in a specified area of main memory.
+ 2. The CPU can then continue with other tasks while the controller performs the read operation and deposits the data in main memory via DMA.
+
+Thus, two activities will be performed at the same time. The CPU will be executing a program and the controller will be overseeing the transfer of data between the disk and main memory. In this manner, the computing resources of the CPU are not wasted during the relatively slow data transfer.
+
+The use of DMA also has the detrimental effect of complicating the communication taking place over a computer’s bus.
+
+Bit patterns must move between the CPU and main memory, between the CPU and each controller, and between each controller and main memory.
+
+Coordination of all this activity on the bus is a major design issue. Even with excellent designs, the central bus can become an impediment (obstacle) as the CPU and the controllers compete for bus access.
+
+This impediment is known as the **von Neumann bottleneck** because it is a consequence of the underlying **von Neumann architecture** in which a CPU fetches its instructions from memory over a central bus.
+
+### Handshaking
+
+The transfer of data between two computer components is rarely a one-way affair. Even though we may think of a printer as a device that receives data, the truth is that a printer also sends data back to the computer. After all, a computer can produce and send characters to a printer much faster than the printer can print them. If a computer blindly sent data to a printer, the printer would quickly fall behind, resulting in lost data.
+
+Thus, a process such as printing a document involves a constant two-way dialogue, known as **handshaking**, in which the computer and the peripheral device exchange information about the device’s status and coordinate their activities.
+
+Handshaking often involves a **status word**, which is a bit pattern that is generated by the peripheral device and sent to the controller.
+
+The status word is a bit map in which the bits reflect the conditions of the device.
+
+### Popular Communication Media
+
+Communication between computing devices is handled over two types of paths: **parallel** and **serial**.
+These terms refer to the manner in which signals are transferred with respect to each other.
+
+**parallel communication**
+
+- several signals are transferred at the same time, each on a separate "line."
+- capable of transferring data rapidly but requires a relatively complex communication path
+
+Example: a computer’s internal bus where multiple wires or traces are used to allow large blocks of data and other signals to be transferred simultaneously.
+
+**serial communication**
+
+- based on transferring signals one after the other over a single line
+- serial communication requires a simpler data path than parallel communication, which is the reason for its popularity
+
+USB and FireWire, which offer relatively high-speed data transfer over short distances of only a few meters, are examples of serial communication systems.
+
+For slightly longer distances (within a home or office building), serial communication over Ethernet connections, either by wire or radio broadcast, are popular.
+
+### Communication Rates
+
+The rate at which bits are transferred from one computing component to another is measured in **bits per second (bps)**.
+
+| Unit | Full Name | Bits per Second |
+|---|---|---:|
+| bps | Bits per second | 1 |
+| Kbps | Kilobits per second | 1,000 |
+| Mbps | Megabits per second | 1,000,000 |
+| Gbps | Gigabits per second | 1,000,000,000 |
+| B/s | Bytes per second | 8 bps |
+| KB/s | Kilobytes per second | 8,000 bps |
+| MB/s | Megabytes per second | 8,000,000 bps |
+| GB/s | Gigabytes per second | 8,000,000,000 bps |
+
+For short distance communication, USB 3.0 and Thunderbolt provide transfer rates of multiple Gbps, which is sufficient for most multimedia applications.
+
+The maximum rate available in a particular setting depends on the type of the communication path and the technology used in its implementation.
+
+This maximum rate is often loosely equated to the communication path’s **bandwidth**, although the term bandwidth also has connotations of capacity rather than transfer rate.
+
+To say that a communication path has a high bandwidth (or provides **broadband** service) means that the communication path has the ability to transfer bits at a high rate as well as the capacity to carry large amounts of information simultaneously.
+
+```
+The Multi-Core CPU
+
+As technology provides ways of placing more and more circuitry on a silicon chip, the physical distinction between a computer’s components diminishes.
+
+For instance, a single chip might contain a CPU and main memory. This is an example of the “system-on-a-chip (SoC)” approach in which the goal is to provide a complete apparatus in a single device that can be used as an abstract tool in higher-level designs.
+In other cases, multiple copies of the same circuit are provided within a single device. This latter tactic originally appeared in the form of chips containing several independent gates or perhaps multiple flip-flops.
+
+Today’s state of the art allows for more than one entire CPU to be placed on a single chip.
+This is the underlying architecture of devices known as multi-core CPUs, which consist of two or more CPUs residing on the same chip along with shared cache memory.
+Such devices simplify the construction of MIMD (Multiple Instruction, Multiple Data) systems and are readily available for use in home computers.
+```
+
+## Other Architectures
+
+### Pipelining
+
+Electric pulses travel through a wire no faster than the speed of light.
+
+Since light travels approximately 30cm in a nanosecond (one billionth of a second), it requires at least 2 nanoseconds for the CPU to fetch an instruction from a memory cell that is 1 foot (30cm) away.
+
+Consequently, to fetch and execute an instruction in such a machine requires several nanoseconds—which means that increasing the execution speed of a machine ultimately becomes a miniaturization problem.
+
+However, increasing execution speed is not the only way to improve a computer’s performance.
+
+The real goal is to improve the machine’s **throughput**, which refers to the total amount of work the machine can accomplish in a given amount of time.
+
+**pipelining**
+
+The technique of allowing the steps in the machine cycle to overlap.
+
+In particular, while one instruction is being executed, the next instruction can be fetched, which means that more than one instruction can be in “the pipe” at any one time, each at a different stage of being processed.
+
+Modern machine designs push the pipelining concept beyond our this example. They are often capable of fetching several instructions at the same time and actually executing more than one instruction at a time when those instructions do not rely on each other.
+
+### Multiprocessor Machines
+
+Pipelining can be viewed as a first step toward **parallel processing**, which is the performance of several activities at the same time.
+
+However, true parallel processing requires more than one processing unit, resulting in computers known as multiprocessor or **multi-core** machines.
+
+#### MIMD architecture
+
+One strategy is to attach several processing units, each resembling the CPU in a single-processor machine, to the same main memory.
+
+In this configuration, the processors can proceed independently yet coordinate their efforts by leaving messages to one another in the common memory cells.
+
+For instance, when one processor is faced with a large task, it can store a program for part of that task in the common memory and then request another processor to execute it.
+
+The result is a machine in which different instruction sequences are performed on different sets of data, which is called a **MIMD (multiple-instruction stream, multiple-data stream)** architecture, as opposed to the more traditional **SISD (single-instruction stream, single-data stream)** architecture.
+
+#### SIMD architecture
+
+A variation of multiple-processor architecture is to link the processors together so that they execute the same sequence of instructions in unison, each with its own set of data.
+
+This leads to a **SIMD (single-instruction stream, multiple-data stream)** architecture.
+
+Such machines are useful in applications in which the same task must be applied to each set of similar items within a large block of data.
+
+#### Parallel Processing with Multiple Computers
+
+This section could also be referred as **Distributed-Memory Architecture** or **Multicomputer Architecture**
+
+Another approach to parallel processing is to construct large computers as conglomerates of smaller machines, each with its own memory and CPU.
+
+A conglomerate means a collection of separate things grouped together to form a larger whole.
+
+Within such an architecture, each of the small machines is coupled to its neighbors so that tasks assigned to the whole system can be divided among the individual machines.
+
+Thus, if a task assigned to one of the internal machines can be broken into independent subtasks, that machine can ask its neighbors to perform these subtasks concurrently.
+
+The original task can then be completed in much less time than would be required by a single-processor machine.
+
+# Operating Systems
+
 # Other
 
 ## Links
