@@ -1007,11 +1007,11 @@ A **bus** is a communication system that carries data, addresses, and control si
 
 There are three common categories of signals:
 
-| Bus signal | Purpose |
-|------------|---------|
-| Data | Carries the actual information |
-| Address | Identifies where data should be read from or written to |
-| Control | Coordinates operations, such as reads and writes |
+| Bus signal | Purpose                                                 |
+| ---------- | ------------------------------------------------------- |
+| Data       | Carries the actual information                          |
+| Address    | Identifies where data should be read from or written to |
+| Control    | Coordinates operations, such as reads and writes        |
 
 With this arrangement, the CPU is able to communicate with the controllers attached to the bus in the same manner that it communicates with main memory.
 
@@ -1042,10 +1042,10 @@ An alternative to memory-mapped I/O is to provide special op-codes in the machin
 
 Since a controller is attached to a computer’s bus, it can carry on its own communication with main memory during those nanoseconds in which the CPU is not using the bus. This ability of a controller to access main memory is known as **direct memory access (DMA)**, and it is a significant asset to a computer’s performance.
 
- For instance, to retrieve data from a sector of a disk:
+For instance, to retrieve data from a sector of a disk:
 
- 1. the CPU can send requests encoded as bit patterns to the controller attached to the disk, asking the controller to read the sector and place the data in a specified area of main memory.
- 2. The CPU can then continue with other tasks while the controller performs the read operation and deposits the data in main memory via DMA.
+1.  the CPU can send requests encoded as bit patterns to the controller attached to the disk, asking the controller to read the sector and place the data in a specified area of main memory.
+2.  The CPU can then continue with other tasks while the controller performs the read operation and deposits the data in main memory via DMA.
 
 Thus, two activities will be performed at the same time. The CPU will be executing a program and the controller will be overseeing the transfer of data between the disk and main memory. In this manner, the computing resources of the CPU are not wasted during the relatively slow data transfer.
 
@@ -1092,15 +1092,15 @@ For slightly longer distances (within a home or office building), serial communi
 
 The rate at which bits are transferred from one computing component to another is measured in **bits per second (bps)**.
 
-| Unit | Full Name | Bits per Second |
-|---|---|---:|
-| bps | Bits per second | 1 |
-| Kbps | Kilobits per second | 1,000 |
-| Mbps | Megabits per second | 1,000,000 |
-| Gbps | Gigabits per second | 1,000,000,000 |
-| B/s | Bytes per second | 8 bps |
-| KB/s | Kilobytes per second | 8,000 bps |
-| MB/s | Megabytes per second | 8,000,000 bps |
+| Unit | Full Name            |   Bits per Second |
+| ---- | -------------------- | ----------------: |
+| bps  | Bits per second      |                 1 |
+| Kbps | Kilobits per second  |             1,000 |
+| Mbps | Megabits per second  |         1,000,000 |
+| Gbps | Gigabits per second  |     1,000,000,000 |
+| B/s  | Bytes per second     |             8 bps |
+| KB/s | Kilobytes per second |         8,000 bps |
+| MB/s | Megabytes per second |     8,000,000 bps |
 | GB/s | Gigabytes per second | 8,000,000,000 bps |
 
 For short distance communication, USB 3.0 and Thunderbolt provide transfer rates of multiple Gbps, which is sufficient for most multimedia applications.
@@ -1186,9 +1186,157 @@ The original task can then be completed in much less time than would be required
 
 # Operating Systems
 
+An **operating system** is the software that controls the overall operation of a computer.
+
+## Operating System Architecture
+
+### A Software Survey
+
+A machine’s software is divided into two broad categories: **application software** and **system software**.
+
+#### **Application software**
+
+- consists of the programs for performing tasks particular to the machine’s utilization.
+- meaning application software is a set of programs designed to help users perform specific tasks on a computer.
+- spreadsheets, database systems, desktop publishing systems, accounting systems, program development software, and games
+
+#### **System software**
+
+- performs those tasks that are common to computer systems in general
+- in a sense, the system software provides the infrastructure that the application software requires
+
+Within the class of system software are two categories: **operating system** itself and the other consists of software units collectively known as **utility software**.
+
+**Utility software**
+
+- Programs that help maintain, manage, or add useful functions to the computer.
+- Utility software performs important tasks that are not always included directly in the operating system.
+
+Modern operating systems often include many utilities themselves.
+
+**Examples of utility software**:
+
+- **Disk formatting**: Prepares a storage device for use.
+- **File copying**: Copies files from one storage device to another.
+- **Compression**: Makes files smaller to save storage space.
+- **Decompression**: Restores compressed files so they can be used.
+- **Multimedia software**: Plays music and videos.
+- **Network utilities**: Help manage or troubleshoot network connections.
+
+**Distinction**
+
+The **distinction between application software and utility software** can be **vague**.
+
+From our point of view, the difference is whether the package is part of the computer’s "software infrastructure."
+Thus, a new application may evolve to the status of a utility if it becomes a fundamental tool.
+
+**Example:**
+
+When still a research project, software for communicating over the Internet was considered application software; today, such tools are fundamental to most computer usage and would therefore be classified as utility software.
+
+The **distinction between utility software and the operating system** is **equally vague**.
+
+**Example:**
+
+In particular, antitrust lawsuits in the United States and Europe have been founded on questions regarding whether units such as browsers and media players are components of Microsoft’s operating systems or utilities that Microsoft has included merely to squash competition.
+
+![Software classification](images/software-classification.png)
+
+### Components of an Operating System
+
+#### User Interface
+
+In order to perform the actions requested by the computer’s users, an operating system must be able to communicate with those users.
+
+The portion of an operating system that handles this communication is often called the **user interface**.
+
+Older user interfaces, called **shells**, communicated with users through textual messages using a keyboard and monitor screen.
+
+More modern systems perform this task by means of a **graphical user interface (GUI)**
+
+An important component within today’s GUI shells is the **window manager**, which allocates blocks of space on the screen, called windows, and keeps track of which application is associated with each window.
+
+**NOTE:**
+
+When an application wants to display something on the screen, it notifies the window manager, and the window manager places the desired image in the window assigned to the application.
+
+In turn, when a mouse button is clicked, it is the window manager that computes the mouse’s location on the screen and notifies the appropriate application of the mouse action.
+
+Window managers are responsible for what is generally called the "style" of a GUI, and most managers offer a range of configurable choices. Linux users even have a range of choices for a window manager, with popular choices including KDE and Gnome.
+
+![The user interface acts as an intermediary between users and the operating system’s kernel](images/kernel-vs-userinterface.png)
+
+#### Kernel
+
+In contrast to an operating system’s user interface, the internal part of an operating system is called the **kernel**.
+
+An operating system’s kernel contains those software components that perform the very basic functions required by the computer installation.
+
+**-- File Manager --**
+
+One such unit is the **file manager**, whose job is to coordinate the use of the machine’s mass storage facilities.
+
+The file manager maintains records of all the files stored in mass storage
+
+- including where each file is located
+- which users are allowed to access the various files
+- which portions of mass storage are available for new files or extensions to existing files.
+
+These records are kept on the **individual storage medium** containing the related files so that each time the medium is **placed on-line**, the file manager can retrieve them and thus know what is stored on that particular medium.
+
+An individual storage medium means one specific device or object used to store data.
+
+**Example:**
+
+Imagine you have two USB flash drives:
+- **USB A** contains your school documents.
+- **USB B** contains your photos.
+Each USB drive has its own files and information about where those files are stored.
+
+When you plug in **USB A** (**putting it online** or making it available to the computer), the file manager can read its records to identify the files stored on it.
+
+---
+
+For the convenience of the machine’s users, most file managers allow files to be grouped into a bundle called a **directory** or **folder**.
+
+A chain of directories within directories is called a **directory path**.
+
+Any access to a file by other software units is obtained at the discretion of the file manager.
+
+- The procedure begins by requesting that the file manager grant access to the file through a procedure known as **opening the file**.
+- If the file manager approves the requested access, it provides the information needed to find and to manipulate the file.
+
+**-- Device Drivers --**
+
+Another component of the kernel consists of a collection of **device drivers**.
+
+Which are the **software units that communicate with the controllers** (or at times, directly with peripheral devices) to carry out operations on the peripheral devices attached to the machine.
+
+Each device driver is **uniquely designed for its particular type of device** (such as a printer, disk drive, or monitor) and **translates generic requests** into the more technical steps required by the device assigned to that driver.
+
+**The device driver converts that general request into the specific commands needed by that particular device.**
+
+**For example:**
+
+A device driver for a printer contains the software for reading and decoding that particular printer’s status word as well as all the other handshaking details.
+
+Other software components **do not** have to deal with those technicalities, they can merely **rely on the device driver software** to print the file, and let the device driver take care of the details.
+
+---
+
+In this manner, the design of the other software units can be **independent of the unique characteristics of particular devices**. The result is a **generic operating system** that **can be customized for particular peripheral devices** by merely installing the appropriate device drivers.
+
+**-- Memory Manager --**
+
 # Other
 
-## Links
+## Useful tools
+
+**xxd** - can be used to dump the binary contents of a file to your terminal
+
+```bash
+xxd <file>
+```
 
 [Online Logic Gate Simulator](https://lgsim.io/app.html)
 
