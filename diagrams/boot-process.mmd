@@ -1,0 +1,24 @@
+flowchart TD
+    A(["Computer is turned on"]) --> B["CPU starts at a predetermined address"]
+    B --> C["Firmware in nonvolatile memory is available"]
+    C --> D["Boot Loader executes"]
+    D --> E["Boot Loader locates the operating system"]
+    E --> F["Operating system is transferred into main memory"]
+    F --> G["CPU jumps to the operating system"]
+    G --> H["Operating system takes control"]
+    H --> I["User requests an application or utility"]
+    I --> J["Requested program executes"]
+
+    subgraph FIRMWARE["Firmware: BIOS / UEFI"]
+        C
+    end
+
+    classDef start fill:#263449,color:#fff,stroke:#263449
+    classDef firmware fill:#fef3c7,color:#78350f,stroke:#f59e0b
+    classDef boot fill:#dbeafe,color:#1e3a8a,stroke:#60a5fa
+    classDef running fill:#d1fae5,color:#064e3b,stroke:#34d399
+
+    class A start
+    class B,C firmware
+    class D,E,F,G boot
+    class H,I,J running

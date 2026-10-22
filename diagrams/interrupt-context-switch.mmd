@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant CPU
+    participant ProcessA as Process A
+    participant Dispatcher
+    participant Scheduler
+    participant ProcessB as Process B
+
+    Dispatcher->>CPU: Start time slice for Process A
+    CPU->>ProcessA: Execute instructions
+    Note over CPU,ProcessA: Time slice expires
+    CPU->>CPU: Complete current machine cycle
+    CPU->>CPU: Save current process state
+    CPU->>Dispatcher: Interrupt transfers control
+    Dispatcher->>Scheduler: Identify ready processes
+    Scheduler-->>Dispatcher: Select highest-priority ready process
+    Dispatcher->>CPU: Start next time slice
+    CPU->>ProcessB: Execute instructions

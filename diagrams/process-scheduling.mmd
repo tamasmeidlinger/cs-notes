@@ -1,0 +1,25 @@
+flowchart TD
+    A["New Process"] --> B["Scheduler adds process to process table"]
+    B --> C["Ready"]
+    C --> D["Dispatcher selects process"]
+    D --> E["Running"]
+
+    E -->|"Time slice expires / interrupt"| C
+    E -->|"I/O request"| F["Waiting"]
+    F -->|"I/O completes"| C
+    E -->|"Execution completes"| G(["Terminated"])
+
+    H["Scheduler"] -.->|"Tracks and selects ready processes"| C
+    I["Dispatcher"] -.->|"Allocates CPU time"| E
+
+    classDef ready fill:#dbeafe,color:#1e3a8a,stroke:#60a5fa
+    classDef running fill:#d1fae5,color:#064e3b,stroke:#34d399
+    classDef waiting fill:#fef3c7,color:#78350f,stroke:#f59e0b
+    classDef endState fill:#f1f5f9,color:#334155,stroke:#94a3b8
+    classDef management fill:#ede9fe,color:#4c1d95,stroke:#a78bfa
+
+    class C ready
+    class E running
+    class F waiting
+    class A,G endState
+    class B,H,I management

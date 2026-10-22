@@ -1,0 +1,30 @@
+flowchart TB
+    U["User"] --> UI["User Interface"]
+    UI --> APP["Application Programs"]
+    APP <--> K["Operating System Kernel"]
+
+    subgraph KERNEL["Kernel Components"]
+        K --> FM["File Manager"]
+        K --> DD["Device Drivers"]
+        K --> MM["Memory Manager"]
+        K --> SD["Scheduler"]
+        K --> DP["Dispatcher"]
+    end
+
+    FM <--> STORAGE[("Mass Storage")]
+    DD <--> DEV["Peripheral Devices"]
+    MM <--> RAM[("Main Memory")]
+    SD --> DP
+    DP --> CPU["CPU"]
+
+    classDef user fill:#fef3c7,color:#78350f,stroke:#f59e0b
+    classDef interface fill:#dbeafe,color:#1e3a8a,stroke:#60a5fa
+    classDef kernel fill:#263449,color:#fff,stroke:#263449
+    classDef component fill:#d1fae5,color:#064e3b,stroke:#34d399
+    classDef hardware fill:#f1f5f9,color:#334155,stroke:#94a3b8
+
+    class U user
+    class UI,APP interface
+    class K kernel
+    class FM,DD,MM,SD,DP component
+    class STORAGE,DEV,RAM,CPU hardware

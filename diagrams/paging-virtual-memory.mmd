@@ -1,0 +1,21 @@
+flowchart TD
+    A["Programs require more memory than available RAM"] --> B["Memory Manager divides data into pages"]
+
+    B --> C["Pages needed now"]
+    B --> D["Pages not currently needed"]
+
+    C --> E[("Main Memory / RAM")]
+    D --> F[("Mass Storage")]
+
+    F <-->|"Pages moved as needed"| E
+    E --> G["Programs can use a larger virtual address space"]
+
+    classDef process fill:#dbeafe,color:#1e3a8a,stroke:#60a5fa
+    classDef manager fill:#ede9fe,color:#4c1d95,stroke:#a78bfa
+    classDef ram fill:#d1fae5,color:#064e3b,stroke:#34d399
+    classDef storage fill:#fef3c7,color:#78350f,stroke:#f59e0b
+
+    class A,G process
+    class B manager
+    class C,E ram
+    class D,F storage

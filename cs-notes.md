@@ -1242,6 +1242,7 @@ In particular, antitrust lawsuits in the United States and Europe have been foun
 
 ![Software classification](images/software-classification.png)
 
+
 ### Components of an Operating System
 
 #### User Interface
@@ -1328,11 +1329,281 @@ In this manner, the design of the other software units can be **independent of t
 
 **-- Memory Manager --**
 
+The **memory manager**, which is charged with the task of **coordinating the machine’s use of main memory**.
+
+Such duties are **minimal** in an environment in which a computer is asked to perform only **one task at a time**.
+
+- In these cases, the program for performing the current task is placed at a predetermined location in main memory, executed, and then replaced by the program for performing the next task.
+
+In **multiuser or multitasking environments** in which the computer is asked to address many needs at the same time, the duties of the memory manager are **extensive**.
+
+- many programs and blocks of data must reside in main memory concurrently
+- the memory manager must find and assign memory space for these needs
+- ensure that the actions of each program are restricted to the program’s allotted space.
+
+As the needs of different activities come and go, the memory manager must **keep track of those memory areas no longer occupied**.
+
+**Paging and Virtual Memory**
+
+The task of the memory manager is complicated further when **the total main memory space required exceeds the space actually available in the computer**.
+
+In this case, the memory manager may create the illusion of additional memory space by **rotating programs and data back and forth between main memory and mass storage**. This technique is called **paging**.
+
+**For example suppose:**
+
+A main memory of **8GB is required** but the computer **only has 4GB**.
+
+1. the memory manager reserves 4GB of storage space on a magnetic disk
+2. it records the bit patterns that would be stored in main memory
+3. This data is divided into uniformly sized units called **pages** (typically a few KB in size)
+4. the memory manager **shuffles these pages back and forth between main memory and mass storage** so that the **pages that are needed** at any given time are actually **present in the 4GB of main memory**
+
+The result is that the computer is able to function as though it actually had 8GB of main memory. This large "fictional" memory space created by paging is called **virtual memory**.
+
+**-- Scheduler and Dispatcher --**
+
+Two additional components within the kernel of an operating system are the **scheduler** and **dispatcher**.
+
+In a multiprogramming system, the scheduler determines which activities are to be considered for execution, and the dispatcher controls the allocation of time to these activities.
+
+Think of the scheduler and dispatcher as two people organizing who gets to use the CPU.
+
+- **Scheduler**: Chooses who gets a turn. It decides which program or process should run next.
+- **Dispatcher**: Gives the chosen process (program that is currently running) the CPU. It switches the CPU to that process so it can start or continue running.
+
+Simple example:
+
+Imagine three students waiting to speak, but there is only one microphone (the CPU).
+
+- Scheduler: Decides which student speaks next.
+- Dispatcher: Gives the microphone to that student.
+
+### Getting It Started
+
+**-- Booting and ROM --**
+
+Getting the operating system started is accomplished through a procedure known as **boot strapping** (often shortened to **booting**), that is performed by a computer each time it is turned on.
+
+It is this procedure that **transfers the operating system from mass storage** (where it is permanently stored) **into main memory** (which is essentially empty when the machine is first turned on).
+
+A CPU is designed so that its program counter starts with a particular predetermined address each time the CPU is turned on. It is at this location that the CPU expects to find the beginning of the program to be executed.
+
+Conceptually, then, all that is needed is to store the operating system at this location, but the memory loses the data stored in it when the computer is turned off. Thus, the contents of main memory must be replenished each time the computer is restarted.
+
+We need a program (preferably the operating system) to be present in main memory when the computer is first turned on, but the computer's volatile memory is erased each time the machine is turned off.
+
+To resolve this dilemma, a small portion of a computer’s main memory where the CPU expects to find its initial program is **constructed from special nonvolatile memory cells**. Such memory is known as **read-only memory (ROM)** because its contents can be read but not altered.
+
+```
+As an analogy, you can think of storing bit patterns in ROM as blowing tiny fuses
+- some blown open (ones)
+- some blown closed (zeros)
+
+Although the technology used is more advanced.
+More precisely, most ROM in today’s PCs is constructed with flash memory technology.
+Which means that it is not strictly ROM because it can be altered under special circumstances.
+```
+
+**-- Boot Loader --**
+
+In a general-purpose computer, a program called the **boot loader** is permanently stored in the machine’s ROM.
+
+This is the program that is initially executed when the machine is turned on.
+
+The instructions in the boot loader direct the CPU to **transfer the operating system from a predetermined location into the volatile area of main memory**.
+
+![The booting process](images/the-booting-process.png)
+
+Modern boot loaders can copy an operating system into main memory from a variety of locations.
+
+For example:
+
+1. in embedded systems, such as smartphones, the operating system is copied from special flash (nonvolatile).
+2. in the case of small workstations at large companies or universities, the operating system may be copied from a distant machine over a network.
+
+Once the operating system has been placed in main memory, the boot loader directs the CPU to execute a jump instruction to that area of memory.
+
+At this point, **the operating system takes over** and **begins controlling the machine’s activities**. The overall process of executing the boot loader and thus starting the operating system is called **booting** the computer.
+
+**-- Firmware --**
+
+In addition to the boot loader, a **PC’s ROM contains a collection of software routines for performing fundamental input/output activities** such as receiving information from the keyboard, displaying messages on the computer screen, and reading data from mass storage.
+
+Being stored in nonvolatile memory such as **FlashROM**, this software is **not immutably etched into the silicon of the machine—the hardware**—**but is also not as readily changeable** as the rest of the programs in mass storage—the software.
+
+The term **firmware** was coined to describe this middle ground.
+
+Firmware routines can be used by the boot loader to perform I/O activities before the operating system becomes functional.
+
+For example, they are used to communicate with the computer user before the boot process actually begins and to report errors during booting.
+
+Widely used firmware systems include the **BIOS (Basic Input/Output System)** long used in PCs, the newer **EFI (Extensible Firmware Interface)**, Sun’s Open Firmware (now a product of Oracle), and the **CFE (Common Firmware Environment)** used in many embedded devices.
+
+- **Firmware:** Software stored in nonvolatile memory that controls basic hardware functions and helps the computer start up. It remains stored when the computer is turned off.
+- **BIOS (Basic Input/Output System):** Older type of firmware that initializes hardware and starts the boot process.
+- **UEFI (Unified Extensible Firmware Interface):** Modern replacement for BIOS that performs the same basic role but supports newer features and hardware.
+- BIOS and UEFI help initialize the computer's hardware and find and start the operating system.
+- **Why not store the entire OS in ROM?**
+  - Operating systems are large, so storing them in ROM is inefficient with current technology.
+  - Small embedded systems can store their entire OS in nonvolatile memory because their operating systems are much smaller.
+- **Why use mass storage (e.g., SSDs) for the OS?**
+  - Mass storage provides large storage capacity at a reasonable cost.
+  - Operating systems require frequent updates for security, bug fixes, and support for new hardware and device drivers.
+  - Mass storage makes it practical to store and replace large amounts of OS data during updates.
+- **Firmware updates:** Firmware can also be updated to fix bugs, improve security, or support hardware. Modern BIOS/UEFI firmware is usually stored in rewritable flash memory rather than traditional, unchangeable ROM.
+
+**Remember:** Firmware (BIOS/UEFI) helps the computer start; the OS stored on an SSD manages the computer and runs its programs.
+
+**-- Final notes --**
+
+**Understanding the boot process** as well as **the distinctions between an operating system, utility software, and application software** allows us to comprehend **the overall methodology** under which most general-purpose computer systems operate.
+
+When such a machine is first turned on, the boot loader loads and activates the operating system
+
+The user then makes requests to the operating system regarding the utility or application programs to be executed.
+
+As each utility or application is terminated, the user is put back in touch with the operating system, at which time the user can make additional requests.
+
+## Coordinating the Machine's Activities
+
+### The Concept of a Process
+
+The activity of executing a program under the control of the operating system is known as a **process**.
+
+Associated with a process is the current status of the activity, called the **process state**.
+
+This state includes the current position in the program being executed (the value of the program counter) as well as the values in the other CPU registers and the associated memory cells.
+
+Typical time-sharing/multitasking computers are running many processes, all competing for the computer’s resources.
+
+It is the task of the operating system to manage these processes so that:
+
+- each process has the resources (peripheral devices, space in main memory, access to files, and access to a CPU) that it needs
+- independent processes do not interfere with one another
+- and that processes that need to exchange information are able to do so
+
+### Process Administration
+
+The tasks associated with coordinating the execution of processes are handled by the **scheduler** and **dispatcher** within the operating system’s kernel.
+
+**-- Scheduler --**
+
+The scheduler:
+- maintains a record of the processes present in the computer system
+- introduces new processes to this pool, and removes completed processes from the pool
+
+Thus, when a user requests the execution of an application, it is the scheduler that adds the execution of that application to the pool of current processes.
+
+**Process Table**
+
+To keep track of all the processes, the scheduler maintains a block of information in main memory called the **process table**.
+
+Each time the execution of a program is requested, the scheduler creates a new entry for that process in the process table.
+
+This entry contains such information as:
+
+- the **memory area assigned to the process** (obtained from the memory manager)
+- the **priority** of the process
+- whether the process is **ready** or **waiting**.
+
+A process is **ready** if it is in a state in which its progress can continue
+
+A process is **waiting** if its progress is currently delayed until some external event occurs
+
+- such as the completion of a mass storage operation, the pressing of a key at the keyboard, or the arrival of a message from another process.
+
+**-- Dispatcher --**
+
+The dispatcher is the component of the kernel that **oversees the execution of the scheduled processes**.
+
+In a time-sharing/multitasking system, this task is accomplished by **multiprogramming**; that is, dividing time into short segments, each called a **time slice** (typically measured in milliseconds or microseconds), and then switching the CPU’s attention among the processes as each is allowed to execute for one time slice.
+
+The procedure of changing from one process to another is called a **process switch** (or a **context switch**).
+
+Each time the dispatcher awards a time slice to a process, it initiates a timer circuit that will indicate the end of the slice by generating a signal called an **interrupt**.
+
+The CPU reacts to this interrupt signal in much the same way that **you** react when interrupted from a task.
+- You stop what you are doing
+- record where you are in the task (so that you will be able to return at a later time)
+- take care of the interrupting entity.
+
+**When the CPU receives an interrupt signal:**
+
+- it completes its current machine cycle
+- saves its position in the current process
+- begins executing a program, called an **interrupt handler**, which is stored at a predetermined location in main memory.
+
+This interrupt handler is a part of the dispatcher, and it describes how the dispatcher should respond to the interrupt signal.
+
+The effect of the interrupt signal is to **preempt*** the current process and transfer control back to the dispatcher.
+
+**preempt*** - take action in order to prevent (an anticipated event) from happening; forestall.
+
+**At this point**
+
+- the dispatcher **selects the process** from the process table that has the **highest priority** among the **ready processes** (as determined by the scheduler)
+- **restarts** the timer circuit, and allows the selected process to begin its time slice.
+
+![Multiprogramming between process A and process B](images/multiprogramming-between-processes.png)
+
+CPUs designed for multiprogramming systems incorporate the task of saving this information as part of the CPU’s reaction to the interrupt signal.
+
+These CPUs also tend to have machine-language instructions for reloading a previously saved state.
+
+**-- Final notes --**
+
+The use of multiprogramming has been found to increase the overall efficiency of a machine, which is somewhat counterintuitive since the shuffling of processes required by multiprogramming introduces an overhead.
+
+However, without multiprogramming, each process runs to completion before the next process begins.
+
+Meaning the time that a process is waiting for peripheral devices to complete tasks or for a user to make the next request is wasted.
+
+Multiprogramming allows this lost time to be given to another process.
+
+**For example:**
+
+If a process executes an I/O request, such as a request to retrieve data from a magnetic disk:
+
+- The scheduler will update the process table to reflect that the process is waiting for an external event.
+- In turn, the dispatcher will cease to award time slices to that process.
+- Later (perhaps several hundred milliseconds), when the I/O request has been completed, the scheduler will update the process table to show that the process is ready.
+- Thus that process will again compete for time slices.
+
+In short, progress on other tasks will be made while the I/O request is being performed, and thus the entire collection of tasks will be completed in less time than if executed in a sequential manner.
+
+## Handling Competition Among Processes
+
+## Operation System Diagramms
+
+### Software Classification Diagram
+
+![Software Classification Diagram](diagrams/pngs/software-classification.png)
+
+### Operating System Architecture Diagram
+
+![Operating System Architecture Diagram](diagrams/pngs/os-architecture.png)
+
+### Boot Process Diagram
+
+![Boot Process Diagram](diagrams/pngs/boot-process.png){height=90%}
+
+### Process Scheduling Diagram
+
+![Process Scheduling Diagram](diagrams/pngs/process-scheduling.png)
+
+### Interrupt and Context Switch Diagram
+
+![Interrupt and Context Switch Diagram](diagrams/pngs/interrupt-context-switch.png)
+
+### Paging and Virtual Memory Diagram
+
+![Paging and Virtual Memory Diagram](diagrams/pngs/paging-virtual-memory.png){height=90%}
+
 # Other
 
 ## Useful tools
 
-**xxd** - can be used to dump the binary contents of a file to your terminal
+**xxd** - can be used to dump the binary contents of a file to your terminal (included on macOS and Linux)
 
 ```bash
 xxd <file>

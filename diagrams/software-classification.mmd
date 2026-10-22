@@ -1,0 +1,24 @@
+flowchart TD
+    A["Computer Software"] --> B["Application Software"]
+    A --> C["System Software"]
+
+    B --> B1["Programs for specific user tasks"]
+    B1 --> B2["Spreadsheets"]
+    B1 --> B3["Database Systems"]
+    B1 --> B4["Games"]
+
+    C --> D["Operating System"]
+    C --> E["Utility Software"]
+
+    E --> E1["Disk Formatting"]
+    E --> E2["File Copying"]
+    E --> E3["Compression"]
+    E --> E4["Network Utilities"]
+
+    classDef root fill:#263449,color:#fff,stroke:#263449
+    classDef category fill:#dbeafe,color:#172554,stroke:#60a5fa
+    classDef example fill:#f1f5f9,color:#334155,stroke:#94a3b8
+
+    class A root
+    class B,C,D,E category
+    class B1,B2,B3,B4,E1,E2,E3,E4 example
