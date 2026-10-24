@@ -1573,6 +1573,331 @@ In short, progress on other tasks will be made while the I/O request is being pe
 
 ## Handling Competition Among Processes
 
+### Semaphores
+
+#### Resource Allocation
+
+An operating system (OS) allocates machine resources to processes, including:
+- **File manager:** Allocates file access and storage space.
+- **Memory manager:** Allocates memory.
+- **Scheduler:** Allocates space in the process table.
+- **Dispatcher:** Allocates CPU time slices.
+
+**Machine resources:** The hardware and system capabilities that processes need to use, including peripheral devices (e.g., printers), memory, storage, and CPU time.
+
+Resource allocation must be carefully managed to prevent conflicts and system malfunctions.
+
+#### The Problem with Simple Flags
+
+A **flag** is a bit in memory used to track whether a resource is available:
+- **Clear (0):** Resource is available.
+- **Set (1):** Resource is allocated.
+
+A simple flag system can fail if checking and setting the flag requires multiple instructions. A process might check that a resource is available, get interrupted before setting the flag, and allow another process to access the same resource.
+
+This can result in **two processes accessing the same resource simultaneously**, causing incorrect behavior.
+
+#### Atomic Operations
+
+The solution is to make checking and setting the flag an **atomic operation** — an operation that cannot be interrupted halfway through.
+
+Two approaches are:
+- **Disable/enable interrupts:** Prevent interrupts during the flag-checking routine, then re-enable them afterward.
+- **Test-and-set instruction:** An atomic machine instruction that reads a flag's value and sets it in one indivisible operation.
+
+#### Semaphore
+
+A **semaphore** is a synchronization mechanism used to control access to shared resources and prevent conflicting operations.
+
+For a binary semaphore:
+- `0` (clear): Resource is available.
+- `1` (set): Resource is occupied.
+
+A process must acquire the semaphore before accessing the protected resource and release it when finished. If the semaphore is already set, the process must wait.
+
+#### Critical Region
+
+A **critical region** (or critical section) is a sequence of instructions that should be executed by only one process at a time when accessing a shared resource.
+
+#### Mutual Exclusion
+
+**Mutual exclusion** is the requirement that only one process at a time can execute a protected critical region.
+
+A semaphore enforces mutual exclusion by ensuring that:
+1. A process checks and acquires the semaphore atomically.
+2. The process enters the critical region.
+3. The process exits the critical region and releases the semaphore.
+4. Other waiting processes can then acquire the semaphore.
+
+#### Key Takeaway
+
+Semaphores prevent multiple processes from simultaneously accessing shared resources. Their correct implementation requires atomic operations to ensure that checking and acquiring a resource cannot be interrupted, preventing race conditions.
+
+A **race condition** occurs when multiple processes access shared data or resources concurrently, and the result depends on the order or timing of their execution.
+
+**Example**: Two processes check whether a printer is available before either sets the flag. Both see that it is available and attempt to use it simultaneously.
+
+### Deadlock
+
+#### Deadlock
+
+A **deadlock** is a condition in which two or more processes are blocked from progressing because each is waiting for a resource allocated to another process.
+
+**Examples:**
+
+- **Printer and DVD player:** Process A holds the printer and waits for the DVD player, while Process B holds the DVD player and waits for the printer.
+- **Full process table (forking):** If no space remains in the process table and every process must create another process before completing, no process can continue.
+
+In UNIX, **forking** means creating a new process, processes are allowed to create new processes. If the process table is full and every process must create another process before completing its task, no process can continue, resulting in a deadlock.
+
+Deadlocks can severely degrade system performance.
+
+#### Conditions for Deadlock
+
+Deadlock can occur only when all three of the following conditions are satisfied:
+
+1. **Competition for nonshareable resources:** Multiple processes compete for resources that cannot be used by multiple processes simultaneously.
+2. **Partial resource allocation:** Processes hold some resources while requesting additional resources.
+3. **No forced resource retrieval:** Once a resource has been allocated, it cannot be forcibly taken away from the process holding it.
+
+To eliminate the possibility of deadlock, an operating system can prevent any one of these three conditions from occurring.
+
+#### Deadlock Detection and Correction
+
+**Deadlock detection and correction** schemes do not attempt to prevent deadlocks. Instead, they detect deadlocks when they occur and correct them by forcibly retrieving allocated resources.
+
+For example, if a full process table causes a deadlock, the operating system or an administrator can **kill** some processes to free process table space, allowing the remaining processes to continue.
+
+This approach is suitable when deadlocks are considered sufficiently unlikely that prevention is not worth the effort.
+
+#### Deadlock Avoidance
+
+**Deadlock avoidance** schemes attack one of the first two deadlock conditions to prevent deadlocks.
+
+Two approaches are:
+
+- **Request all resources at once:** Require each process to request all the resources it needs before beginning. This prevents processes from holding some resources while waiting for additional ones.
+- **Make nonshareable resources appear shareable:** Use techniques that allow multiple processes to access a resource without directly competing for it.
+
+#### Spooling
+
+**Spooling (Simultaneous Peripheral Operations On-Line)** is a technique that stores output data in mass storage so it can be sent to a peripheral device, such as a printer, later when the device is available.
+
+**How it works:**
+
+1. A process requests access to the printer.
+2. The operating system stores the process's output in mass storage instead of sending it directly to the printer.
+3. The process can continue without waiting for the physical printer.
+4. When the printer becomes available, the operating system sends the stored output to it.
+
+Spooling makes a nonshareable resource appear shareable by allowing multiple processes to submit output without directly competing for the printer at the same time.
+
+#### Sharing Files Between Processes
+
+A file manager can control access to shared files according to how processes use them:
+
+- **Multiple readers:** Several processes can read the same file simultaneously.
+- **Single writer:** Only one process can write to a file at a time to prevent conflicting modifications.
+- **Separate file sections:** Different processes can modify different parts of a file concurrently.
+
+The operating system must manage potential conflicts, such as ensuring that processes with read access are appropriately notified when a file is modified.
+
+#### Key Takeaway
+
+Deadlocks occur when processes wait indefinitely for resources held by one another. Operating systems can address them through **deadlock detection and correction**, or by preventing at least one of the conditions required for deadlock. Techniques such as **spooling** and controlled file access help manage shared resources efficiently.
+
+```
+Python and Operating Systems
+
+When a Python script is executed by a user, the operating system launches a new process to run the script.
+Such scripts are often applications, although they can also be considered utility software if they extend or customize the capabilities of the system.
+
+Python scripts interact with components of the operating system to accomplish their work, such as the file manager for reading and writing files, or the GUI or shell for providing user interactions.
+
+The Python module “os” provides a variety of predefined, system-agnostic functions for accessing common operating system features, such as forking new Python processes, or executing other utility or application programs.
+```
+
+```
+Multi-Core Operating Systems
+
+Traditional time-sharing/multitasking systems give the illusion of executing many processes at once by switching rapidly between time slices faster than a human can perceive.
+Modern systems continue to multitask in this way, but in addition, the latest multi-core CPUs are genuinely capable of running two, four, or many more processes simultaneously.
+
+Unlike a group of single-core computers working together, a multi-core machine contains multiple independent processors (in this case called cores) that share the computer’s peripherals, memory, and other resources.
+
+For a multi-core operating system, this means that the dispatcher and scheduler must consider which processes to execute on each core.
+With different processes running on different cores, handling competition among processes becomes more challenging because disabling interrupts on all cores whenever one needs to enter a critical region would be highly inefficient.
+
+Computer science has many active research areas related to building operating system mechanisms better suited to the new multi-core world.
+```
+
+## Security
+
+### Operating System Security
+
+An **operating system (OS)** plays a vital role in maintaining computer security by protecting system resources, preventing unauthorized access, and ensuring reliable operation.
+
+Security also includes **reliability**: a dependable OS must prevent software defects from causing data loss or system failures (crashes). For example:
+
+- A file manager defect that causes part of a file to be lost compromises security.
+- A dispatcher defect that crashes the system and causes unsaved work to be lost compromises security.
+
+Developing reliable software is part of **software engineering**, which focuses on the methods used to build dependable software.
+
+Operating system security involves protecting against both **external attacks** and **internal attacks**.
+
+### Attacks from the Outside
+
+#### User Accounts and Authentication
+
+An OS protects computer resources from unauthorized users by establishing **user accounts**.
+
+A user account is a record maintained by the OS containing information such as:
+
+- **Username:** Identifies the user.
+- **Password:** Helps verify the user's identity.
+- **Privileges:** Define which actions and resources the user is allowed to access.
+
+During **login**, the user establishes contact with the OS and provides the required credentials. The OS uses the account information to control access to the system.
+
+#### Super User / Administrator
+
+The **super user** (also called the **administrator**) has highly privileged access to the OS.
+
+An administrator can:
+- Create and manage user accounts.
+- Change system settings.
+- Modify critical software packages.
+- Adjust the privileges granted to other users.
+- Monitor system activity and perform maintenance.
+
+Because administrators can make critical changes to a system, their accounts and passwords must be carefully protected.
+
+#### Auditing Software
+
+**Auditing software** records and analyzes activities within a computer system to detect suspicious or unauthorized behavior.
+
+It can help identify:
+- Repeated failed login attempts, which may indicate attempts to guess a password.
+- Unusual activity within a user account, which may indicate that someone else has gained access.
+- Suspicious software or activities that may threaten system security.
+
+#### Sniffing Software
+
+**Sniffing software** is software that records activities on a computer and later reports them to an intruder.
+
+One example is a **fake login program** that imitates the operating system's login procedure. Users may believe they are logging in normally, but they are actually giving their usernames and passwords to an impostor.
+
+#### User Carelessness
+
+Users themselves can create significant security risks by:
+
+- Choosing easy-to-guess passwords, such as names or dates.
+- Sharing passwords with others.
+- Failing to change passwords when required by security policies.
+- Moving storage devices between computers where they may be exposed to damage or threats.
+- Installing unapproved software that may compromise security.
+
+Organizations often establish and enforce **security policies** that define users' responsibilities and the requirements for protecting computer systems.
+
+### Attacks from Within
+
+#### Unauthorized Access to Resources
+
+After gaining access to a system, an intruder—or an authorized user with malicious intent—may try to access information or introduce destructive software.
+
+An intruder using a regular user account may attempt to bypass the privileges assigned to that account. For example:
+- **Memory manager attack:** Attempting to access memory outside the process's assigned area.
+- **File manager attack:** Attempting to access files that the user is not authorized to retrieve.
+
+The OS and CPU must work together to prevent processes from exceeding their permissions.
+
+#### Memory Protection
+
+Each process must be restricted to the area of main memory assigned to it by the memory manager.
+
+Without memory protection, a process could access or modify the memory used by other processes, potentially even erasing the OS from memory.
+
+To prevent this, CPUs designed for multiprogramming systems can use **special-purpose registers** to store the lower and upper limits of a process's assigned memory area.
+
+**Remember**: Multiprogramming system: An operating system that keeps multiple processes in memory and switches the CPU between them so they can share processing time.
+
+During execution:
+1. The CPU checks each memory reference against the stored limits.
+2. If the reference is within the permitted range, execution can continue.
+3. If the reference falls outside the permitted range, the CPU generates an interrupt and transfers control to the OS.
+4. The OS can then take appropriate action.
+
+However, this mechanism alone is insufficient: a process must not be allowed to modify the memory limit registers itself, since it could otherwise expand its permitted memory area.
+
+**How are memory limits changed?**
+
+A process cannot change its own memory limits. Instead:
+
+1. The process requests more memory from the operating system.
+2. The memory manager checks whether sufficient memory is available and allocates it if possible.
+3. The OS updates the special-purpose registers using privileged instructions while running in privileged mode.
+
+
+### Privileged and Nonprivileged Modes
+
+To protect critical system operations, CPUs for multiprogramming systems support two privilege levels:
+
+#### Privileged Mode
+
+In **privileged mode**, the CPU can execute all instructions in its machine language, including instructions that control critical system resources.
+
+This mode is used by the OS to perform operations that must not be freely available to ordinary processes.
+
+#### Nonprivileged Mode
+
+In **nonprivileged mode**, the CPU can execute only a restricted set of instructions.
+
+Ordinary processes run in this mode, preventing them from directly performing certain sensitive operations.
+
+#### Privileged Instructions
+
+**Privileged instructions** are machine instructions that can only be executed in privileged mode.
+
+Examples include instructions that:
+
+- Modify memory limit registers.
+- Change the CPU's current privilege mode.
+
+If a process attempts to execute a privileged instruction while the CPU is in nonprivileged mode:
+
+1. The CPU generates an interrupt.
+2. Control is transferred to an interrupt handler within the OS.
+3. The CPU switches to privileged mode so the OS can handle the situation.
+
+#### How the OS Uses Privilege Levels
+
+The process works as follows:
+
+1. When the computer starts, the CPU begins in privileged mode.
+2. The OS starts during the boot process and can execute privileged instructions.
+3. When the OS allows a process to run for a time slice, it switches the CPU to nonprivileged mode.
+4. If the process attempts a privileged operation, the CPU generates an interrupt and transfers control back to the OS.
+5. The OS handles the event and maintains control over sensitive operations.
+
+This separation prevents ordinary processes from directly controlling critical system functions.
+
+### Why Privilege Control Matters
+
+Incorrect privilege-level controls can allow processes to compromise the entire system.
+
+Examples include:
+
+- **Timer manipulation:** If a process can modify the timer controlling time slices, it may extend its execution time and prevent other processes from receiving their fair share of CPU time.
+- **Direct peripheral access:** If a process can access peripheral devices without OS supervision, it may bypass the file manager and access files improperly.
+- **Unauthorized memory access:** If a process can access memory outside its assigned area, it may read or modify data belonging to other processes.
+
+Therefore, correct privilege control is essential for protecting system resources and maintaining system integrity. Operating systems and CPU designs must work together to prevent both malicious attacks and accidental programming errors.
+
+### Key Takeaway
+
+Operating system security depends on protecting resources, controlling user privileges, detecting suspicious activities, and restricting what processes can do. **Memory protection, privileged instructions, and privilege levels** help ensure that ordinary processes cannot interfere with the OS or other processes. Even a single flaw in these mechanisms can compromise the entire system.
+
 ## Operation System Diagramms
 
 ### Software Classification Diagram
@@ -1598,6 +1923,10 @@ In short, progress on other tasks will be made while the I/O request is being pe
 ### Paging and Virtual Memory Diagram
 
 ![Paging and Virtual Memory Diagram](diagrams/pngs/paging-virtual-memory.png){height=90%}
+
+# Networking and the Internet
+
+Continue with networking here
 
 # Other
 
